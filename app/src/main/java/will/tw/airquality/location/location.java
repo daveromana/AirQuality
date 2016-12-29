@@ -35,6 +35,7 @@ public class location implements LocationListener {
 
     public static Double mLongitude;
     public static Double mLatitude;
+
     public location(MainActivity activity) {
         this.activity = activity;
     }
@@ -70,7 +71,7 @@ public class location implements LocationListener {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return"";
+            return "";
         }
         Location location = lms.getLastKnownLocation(bestProvider);
 //        getLocation(location);
@@ -92,11 +93,24 @@ public class location implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (returnAddress.compareTo( "台北市") == 0){
+        if (returnAddress.compareTo("台北市") == 0) {
             returnAddress = "臺北市";
             return returnAddress;
-        }else {
+        } else if (returnAddress.compareTo("台東市") == 0) {
+            returnAddress = "臺東市";
             return returnAddress;
+        } else if (returnAddress.compareTo("台東縣") == 0) {
+            returnAddress = "臺東縣";
+            return returnAddress;
+        } else if (returnAddress.compareTo("台南市") == 0) {
+            returnAddress = "臺南市";
+            return returnAddress;
+        } else if (returnAddress.compareTo("台中市") == 0) {
+            returnAddress = "臺中市";
+            return returnAddress;
+        } else {
+            return returnAddress;
+
         }
 
     }
