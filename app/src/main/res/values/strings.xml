@@ -2,4 +2,21 @@
     <string name="app_name">AirQuality</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="text_sitename">SiteName:</string>
+    <string name="text_country">City:</string>
+    <string name="text_psi">PSI:</string>
+    <string name="text_majorpollutant">MajorPollutant:</string>
+    <string name="text_status">Status:</string>
+    <string name="text_so2">SO2:</string>
+    <string name="text_co">CO:</string>
+    <string name="text_o3">O3:</string>
+    <string name="text_pm10">PM10:</string>
+    <string name="text_pm2.5">PM2.5:</string>
+    <string name="text_no2">NO2:</string>
+    <string name="text_windspeed">WindSpeed:</string>
+    <string name="text_winddirec">WindDirec:</string>
+    <string name="text_fpmi">FPMI:</string>
+    <string name="text_nox">NOx:</string>
+    <string name="text_no">NO:</string>
+    <string name="text_publishtime">PublishTime:</string>
 </resources>

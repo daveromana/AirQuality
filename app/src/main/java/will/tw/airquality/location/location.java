@@ -136,27 +136,5 @@ public class location implements LocationListener {
     public void onStatusChanged(String arg0, int arg1, Bundle arg2) {    //©wŠìª¬ºA§ïÅÜ
         // TODO Auto-generated method stub
     }
-//
-//    public String getAddressByLocation(Location location) {
-//        String returnAddress = "";
-//        try {
-//            if (location != null) {
-//                Double longitude = location.getLongitude();    //šú±ožg«×
-//                Double latitude = location.getLatitude();    //šú±oœn«×
-//
-//                //«Ø¥ßGeocoderª«¥ó: Android 8 ¥H€WŒÒºÃŸ¹ŽúŠ¡·|¥¢±Ñ
-//                Geocoder gc = new Geocoder(activity, Locale.TRADITIONAL_CHINESE);    //Ša°Ï:¥xÆW
-//                //ŠÛžgœn«×šú±oŠa§}
-//                List<Address> lstAddress = gc.getFromLocation(latitude, longitude, 1);
-//
-//                //	if (!Geocoder.isPresent()){ //Since: API Level 9
-//                //		returnAddress = "Sorry! Geocoder service not Present.";
-//                //	}
-//                returnAddress = lstAddress.get(0).getLocality();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return returnAddress;
-//    }
+
 }

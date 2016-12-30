@@ -1,6 +1,8 @@
 package will.tw.airquality;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import will.tw.airquality.air.api.AirApi;
 import will.tw.airquality.air.model.AirReport;
+import will.tw.airquality.fragment.AirFragment;
 import will.tw.airquality.location.location;
 import will.tw.airquality.station.api.StationApi;
 import will.tw.airquality.station.model.StationReport;
@@ -35,15 +39,22 @@ public class MainActivity extends AppCompatActivity {
     private location location;
     public static String sitename = "";
     private String cityname;
+    private ProgressBar progressBar;
+    private Handler handler = new Handler();
+
+
+    public static ArrayList<AirReport> mAirReport;
+    private static final int FRG_AIR_POS = 0;
+    private static final int FRG_UV_POS = 1;
+    private static final int FRG_WEATHER_POS = 2;
+    private MainActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        location = new location(this);
-        cityname = location.testLocationProvider();
-        Log.e("WOWOWOOWOWOWO", cityname);
-        StationSys("County eq \'"+cityname+"\'");
+
 
 
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -68,7 +79,67 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public class MyTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            location = new location(activity);
+            cityname = location.testLocationProvider();
+            Log.e("WOWOWOOWOWOWO", cityname);
+            StationSys("County eq \'"+cityname+"\'");
+            return null;
+        }
 
+        protected void onPreExecute(){
+            // in main thread
+        }
+
+
+        protected void onProgressUpdate(Void... progress){
+            // in main thread
+        }
+
+        protected void onPostExecute(Void result){
+            // in main thread
+        }
+
+        protected void onCancelled(Void result){
+            // in main thread
+        }
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new MyTask().execute(null, null, null);
+
+    }
+
+    private void notifyFrgamentDataChanged() {
+        Fragment robotfrg = mSectionsPagerAdapter.getActiveFragment(mViewPager, FRG_AIR_POS);
+        if (robotfrg instanceof AirFragment) {
+            AirFragment fr = (AirFragment) robotfrg;
+            fr.updateData();
+            Log.d("William", "RobotFragment.updateData()!");
+        }
+//
+//        Fragment accountfrg = mSectionsPagerAdapter.getActiveFragment(mViewPager, FRG_ACCOUNT_POS);
+//        if (accountfrg instanceof AccountFragment) {
+//            AccountFragment fr = (AccountFragment) accountfrg;
+//            fr.updateData();
+//            Log.d(TAG, "AccountFragment.updateData()!");
+//        }
+    }
+
+    public void probar() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
 
 
     private class StationSubscriber extends Subscriber<ArrayList<StationReport>> {
@@ -79,7 +150,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onError(Throwable e) {
             Log.e("onRrror",e.toString());
+            handler.postDelayed(new Runnable(){
+                @Override
+                public void run() {
+                    StationSys("County eq \'"+cityname+"\'");
+                    //過兩秒後要做的事情
+                    Log.d("tag","onError StationSubscriber");
 
+                }}, 5000);
         }
 
         @Override
@@ -101,7 +179,12 @@ public class MainActivity extends AppCompatActivity {
 //                mindisten = Math.min(distence, mindisten);
             }
             Log.e("Sitename", sitename);
-            sysus("SiteName eq \'"+sitename+"\'");
+            handler.postDelayed(new Runnable(){
+                @Override
+                public void run() {
+                    sysus("SiteName eq \'"+sitename+"\'");
+                    Log.d("tag","de sysus");
+                }}, 500);
         }
     }
 
@@ -115,6 +198,11 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(subscriber);
     }
 
+
+
+
+
+
     private class AirSubscriber extends Subscriber<ArrayList<AirReport>> {
         @Override
         public void onCompleted() {
@@ -123,15 +211,26 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onError(Throwable e) {
             Log.e("onRrror",e.toString());
+            handler.postDelayed(new Runnable(){
+                @Override
+                public void run() {
+                    StationSys("County eq \'"+cityname+"\'");
+                    //過兩秒後要做的事情
+                    Log.d("tag","onError AirSubscriber");
+
+                }}, 5000);
 
         }
 
+
         @Override
         public void onNext(ArrayList<AirReport> report) {
+            probar();
             String text;
             text=report.get(0).getSiteName();
             Log.e("countory",text);
-
+            mAirReport = report;
+            notifyFrgamentDataChanged();
         }
     }
 
@@ -177,9 +276,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position) {
+                case FRG_AIR_POS:
+                    return AirFragment.newInstance(FRG_AIR_POS, "AirQuality");
+//                case FRG_UV_POS:
+//                    return RobotFragment.newInstance(FRG_ROBOT_POS, "Robot");\
+//                case FRG_WEATHER_POS:
+//                    return
+                default:
+                    return PlaceholderFragment.newInstance(position + 1);
+            }
+
+
+//            return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
@@ -199,6 +308,14 @@ public class MainActivity extends AppCompatActivity {
                     return "SECTION 3";
             }
             return null;
+        }
+
+        public Fragment getActiveFragment(ViewPager mViewPager, int frgAirPos) {
+            String name = makeFragmentName(mViewPager.getId(), frgAirPos);
+            return getSupportFragmentManager().findFragmentByTag(name);
+        }
+        private String makeFragmentName(int viewId, int index) {
+            return "android:switcher:" + viewId + ":" + index;
         }
     }
 
