@@ -22,6 +22,7 @@ import will.tw.airquality.R;
 
 public class AirFragment extends Fragment {
     private FragmentActivity mfragmentActivity;
+    private String majorpollutant;
 
     private TextView text_sitename, text_country, text_psi, text_majorpollutant, text_status, text_so2, text_co, text_o3, text_pm10,
             text_pm25, text_no2, text_windspeed, text_winddirec, text_fpmi, text_nox, text_no, text_publishtime;
@@ -64,7 +65,7 @@ public class AirFragment extends Fragment {
         text_no = (TextView) view.findViewById(R.id.no);
         text_nox = (TextView) view.findViewById(R.id.nox);
         text_publishtime = (TextView) view.findViewById(R.id.publishtime);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+//        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
 
     }
@@ -88,7 +89,12 @@ public class AirFragment extends Fragment {
             text_sitename.setText(MainActivity.mAirReport.get(0).getSiteName());
             text_country.setText(MainActivity.mAirReport.get(0).getCounty());
             text_psi.setText(MainActivity.mAirReport.get(0).getPSI());
-            text_majorpollutant.setText(MainActivity.mAirReport.get(0).getMajorPollutant());
+            majorpollutant = MainActivity.mAirReport.get(0).getMajorPollutant();
+            if(majorpollutant.compareTo("") == 0) {
+                text_majorpollutant.setText("無空氣汙染指標物");
+            } else {
+                text_majorpollutant.setText(MainActivity.mAirReport.get(0).getMajorPollutant());
+            }
             text_status.setText(MainActivity.mAirReport.get(0).getStatus());
             text_so2.setText(MainActivity.mAirReport.get(0).getSO2());
             text_co.setText(MainActivity.mAirReport.get(0).getCO());

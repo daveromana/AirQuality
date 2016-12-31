@@ -82,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
     public class MyTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            location = new location(activity);
-            cityname = location.testLocationProvider();
-            Log.e("WOWOWOOWOWOWO", cityname);
-            StationSys("County eq \'"+cityname+"\'");
+//            location = new location(activity);
+//            cityname = location.testLocationProvider();
+            Log.e("WOWOWOOWOWOWO", AirService.cityname);
+            StationSys("County eq \'"+AirService.cityname+"\'");
             return null;
         }
 
@@ -132,14 +132,14 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
 
-    public void probar() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-    }
+//    public void probar() {
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                progressBar.setVisibility(View.INVISIBLE);
+//            }
+//        });
+//    }
 
 
     private class StationSubscriber extends Subscriber<ArrayList<StationReport>> {
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable(){
                 @Override
                 public void run() {
-                    StationSys("County eq \'"+cityname+"\'");
+                    StationSys("County eq \'"+AirService.cityname+"\'");
                     //過兩秒後要做的事情
                     Log.d("tag","onError StationSubscriber");
 
@@ -164,8 +164,8 @@ public class MainActivity extends AppCompatActivity {
         public void onNext(ArrayList<StationReport> report) {
             Double lat;
             Double lon;
-            Double nowlat = location.mLatitude;
-            Double nowlon = location.mLongitude;
+            Double nowlat = AirService.mLatitude;
+            Double nowlon = AirService.mLongitude;
             Double mindisten = 99999999999999.9;
             for (int i= 0; i<report.size(); i ++){
                 lat = Double.valueOf(report.get(i).getTWD97Lat());
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable(){
                 @Override
                 public void run() {
-                    StationSys("County eq \'"+cityname+"\'");
+                    StationSys("County eq \'"+AirService.cityname+"\'");
                     //過兩秒後要做的事情
                     Log.d("tag","onError AirSubscriber");
 
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onNext(ArrayList<AirReport> report) {
-            probar();
+//            probar();
             String text;
             text=report.get(0).getSiteName();
             Log.e("countory",text);
