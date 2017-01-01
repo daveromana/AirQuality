@@ -9,14 +9,28 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import rx.Scheduler;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import will.tw.airquality.air.api.AirApi;
+import will.tw.airquality.air.model.AirReport;
+import will.tw.airquality.fragment.AirFragment;
+import will.tw.airquality.station.api.StationApi;
+import will.tw.airquality.station.model.StationReport;
 
 /**
  * Created by Ashbar on 2016/12/31.
@@ -24,6 +38,10 @@ import java.util.Locale;
 
 public class AirService extends Service {
     public static String cityname;
+
+    public static String sitename = "";
+    private Handler handler = new Handler();
+    public static ArrayList<AirReport> mAirReport;
 
     public AirService(){
 
@@ -52,6 +70,9 @@ public class AirService extends Service {
         super.onCreate();
         cityname = testLocationProvider();
         Log.e("William service", cityname);
+        StationSys("County eq \'"+cityname+"\'");
+        Intent broadIntent = new Intent();
+        broadIntent.putExtra("repo", mAirReport);
     }
 
     /**
@@ -137,4 +158,109 @@ public class AirService extends Service {
         }
 
     }
+
+
+    private class StationSubscriber extends Subscriber<ArrayList<StationReport>> {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.e("onRrror",e.toString());
+            handler.postDelayed(new Runnable(){
+                @Override
+                public void run() {
+                    StationSys("County eq \'"+AirService.cityname+"\'");
+                    //過兩秒後要做的事情
+                    Log.d("tag","onError StationSubscriber");
+
+                }}, 5000);
+        }
+
+        @Override
+        public void onNext(ArrayList<StationReport> report) {
+            Double lat;
+            Double lon;
+            Double nowlat = AirService.mLatitude;
+            Double nowlon = AirService.mLongitude;
+            Double mindisten = 99999999999999.9;
+            for (int i= 0; i<report.size(); i ++){
+                lat = Double.valueOf(report.get(i).getTWD97Lat());
+                lon = Double.valueOf(report.get(i).getTWD97Lon());
+                Double sum = (nowlat - lat)*(nowlat - lat)+(nowlon - lon)*(nowlon - lon);
+                Double distence = Math.sqrt(sum);
+                if (distence<mindisten){
+                    sitename = report.get(i).getSiteName();
+                    mindisten = distence;
+                }
+//                mindisten = Math.min(distence, mindisten);
+            }
+            Log.e("Sitename Service", sitename);
+            handler.postDelayed(new Runnable(){
+                @Override
+                public void run() {
+                    sysus("SiteName eq \'"+sitename+"\'");
+                    Log.d("tag","de sysus");
+                }}, 500);
+        }
+    }
+
+    public void StationSys(String type) {
+        final Scheduler newThread = Schedulers.newThread();
+        final Scheduler mainThread = AndroidSchedulers.mainThread();
+        StationSubscriber subscriber = new StationSubscriber();
+        StationApi.findReportByCity(type)
+                .subscribeOn(newThread)
+                .observeOn(mainThread)
+                .subscribe(subscriber);
+    }
+
+
+
+
+
+
+    private class AirSubscriber extends Subscriber<ArrayList<AirReport>> {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.e("onRrror",e.toString());
+            handler.postDelayed(new Runnable(){
+                @Override
+                public void run() {
+                    StationSys("County eq \'"+AirService.cityname+"\'");
+                    //過兩秒後要做的事情
+                    Log.d("tag","onError AirSubscriber");
+
+                }}, 5000);
+
+        }
+
+
+        @Override
+        public void onNext(ArrayList<AirReport> report) {
+//            probar();
+            String text;
+            text=report.get(0).getSiteName();
+            Log.e("countory Service",text);
+            mAirReport = report;
+        }
+    }
+
+    public void sysus(String type) {
+        final Scheduler newThread = Schedulers.newThread();
+        final Scheduler mainThread = AndroidSchedulers.mainThread();
+        AirSubscriber subscriber = new AirSubscriber();
+        AirApi.findReportByCity(type)
+                .subscribeOn(newThread)
+                .observeOn(mainThread)
+                .subscribe(subscriber);
+    }
+
+
+
 }

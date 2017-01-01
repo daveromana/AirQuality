@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -112,11 +111,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new MyTask().execute(null, null, null);
+//        new MyTask().execute(null, null, null);
+
+
 
     }
 
-    private void notifyFrgamentDataChanged() {
+    public void notifyFrgamentDataChanged() {
         Fragment robotfrg = mSectionsPagerAdapter.getActiveFragment(mViewPager, FRG_AIR_POS);
         if (robotfrg instanceof AirFragment) {
             AirFragment fr = (AirFragment) robotfrg;
@@ -230,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
             text=report.get(0).getSiteName();
             Log.e("countory",text);
             mAirReport = report;
-            notifyFrgamentDataChanged();
+//            notifyFrgamentDataChanged();
         }
     }
 

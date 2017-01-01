@@ -48,6 +48,9 @@ public class SplashActivity extends AppCompatActivity {
         startService(intent);
 
 
+
+
+
 //        StationSys("County eq \'"+AirService.cityname+"\'");
 
         new Handler().postDelayed(new Runnable() {
@@ -67,8 +70,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new MyTask().execute(null, null, null);
-
+//        new MyTask().execute(null, null, null);
     }
 
     public class MyTask extends AsyncTask<Void, Void, Void> {
