@@ -3,47 +3,33 @@ package will.tw.airquality;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import rx.Scheduler;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import will.tw.airquality.air.api.AirApi;
+
 import will.tw.airquality.air.model.AirReport;
 import will.tw.airquality.fragment.AirFragment;
-import will.tw.airquality.location.location;
-import will.tw.airquality.station.api.StationApi;
-import will.tw.airquality.station.model.StationReport;
+
 
 
 public class MainActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private location location;
-    public static String sitename = "";
-    private String cityname;
-    private ProgressBar progressBar;
-    private Handler handler = new Handler();
 
 
-    public static ArrayList<AirReport> mAirReport;
+
     private static final int FRG_AIR_POS = 0;
     private static final int FRG_UV_POS = 1;
     private static final int FRG_WEATHER_POS = 2;
@@ -56,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -66,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -84,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 //            location = new location(activity);
 //            cityname = location.testLocationProvider();
             Log.e("WOWOWOOWOWOWO", AirService.cityname);
-            StationSys("County eq \'"+AirService.cityname+"\'");
+//            StationSys("County eq \'"+AirService.cityname+"\'");
             return null;
         }
 
@@ -112,15 +96,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 //        new MyTask().execute(null, null, null);
-
-
+        notifyFrgamentDataChanged();
 
     }
 
     public void notifyFrgamentDataChanged() {
-        Fragment robotfrg = mSectionsPagerAdapter.getActiveFragment(mViewPager, FRG_AIR_POS);
-        if (robotfrg instanceof AirFragment) {
-            AirFragment fr = (AirFragment) robotfrg;
+        Fragment airfrg = mSectionsPagerAdapter.getActiveFragment(mViewPager, FRG_AIR_POS);
+        if (airfrg instanceof AirFragment) {
+            AirFragment fr = (AirFragment) airfrg;
             fr.updateData();
             Log.d("William", "RobotFragment.updateData()!");
         }
@@ -141,109 +124,6 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //    }
-
-
-    private class StationSubscriber extends Subscriber<ArrayList<StationReport>> {
-        @Override
-        public void onCompleted() {
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            Log.e("onRrror",e.toString());
-            handler.postDelayed(new Runnable(){
-                @Override
-                public void run() {
-                    StationSys("County eq \'"+AirService.cityname+"\'");
-                    //過兩秒後要做的事情
-                    Log.d("tag","onError StationSubscriber");
-
-                }}, 5000);
-        }
-
-        @Override
-        public void onNext(ArrayList<StationReport> report) {
-            Double lat;
-            Double lon;
-            Double nowlat = AirService.mLatitude;
-            Double nowlon = AirService.mLongitude;
-            Double mindisten = 99999999999999.9;
-            for (int i= 0; i<report.size(); i ++){
-                lat = Double.valueOf(report.get(i).getTWD97Lat());
-                lon = Double.valueOf(report.get(i).getTWD97Lon());
-                Double sum = (nowlat - lat)*(nowlat - lat)+(nowlon - lon)*(nowlon - lon);
-                Double distence = Math.sqrt(sum);
-                if (distence<mindisten){
-                    sitename = report.get(i).getSiteName();
-                    mindisten = distence;
-                }
-//                mindisten = Math.min(distence, mindisten);
-            }
-            Log.e("Sitename", sitename);
-            handler.postDelayed(new Runnable(){
-                @Override
-                public void run() {
-                    sysus("SiteName eq \'"+sitename+"\'");
-                    Log.d("tag","de sysus");
-                }}, 500);
-        }
-    }
-
-    public void StationSys(String type) {
-        final Scheduler newThread = Schedulers.newThread();
-        final Scheduler mainThread = AndroidSchedulers.mainThread();
-        StationSubscriber subscriber = new StationSubscriber();
-        StationApi.findReportByCity(type)
-                .subscribeOn(newThread)
-                .observeOn(mainThread)
-                .subscribe(subscriber);
-    }
-
-
-
-
-
-
-    private class AirSubscriber extends Subscriber<ArrayList<AirReport>> {
-        @Override
-        public void onCompleted() {
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            Log.e("onRrror",e.toString());
-            handler.postDelayed(new Runnable(){
-                @Override
-                public void run() {
-                    StationSys("County eq \'"+AirService.cityname+"\'");
-                    //過兩秒後要做的事情
-                    Log.d("tag","onError AirSubscriber");
-
-                }}, 5000);
-
-        }
-
-
-        @Override
-        public void onNext(ArrayList<AirReport> report) {
-//            probar();
-            String text;
-            text=report.get(0).getSiteName();
-            Log.e("countory",text);
-            mAirReport = report;
-//            notifyFrgamentDataChanged();
-        }
-    }
-
-    public void sysus(String type) {
-        final Scheduler newThread = Schedulers.newThread();
-        final Scheduler mainThread = AndroidSchedulers.mainThread();
-        AirSubscriber subscriber = new AirSubscriber();
-        AirApi.findReportByCity(type)
-                .subscribeOn(newThread)
-                .observeOn(mainThread)
-                .subscribe(subscriber);
-    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

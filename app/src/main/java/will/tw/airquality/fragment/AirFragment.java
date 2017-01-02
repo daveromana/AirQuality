@@ -11,7 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import will.tw.airquality.MainActivity;
+
+import will.tw.airquality.AirService;
 import will.tw.airquality.R;
 
 /**
@@ -19,7 +20,6 @@ import will.tw.airquality.R;
  */
 
 public class AirFragment extends Fragment {
-    private FragmentActivity mfragmentActivity;
     private String majorpollutant;
 
     private TextView text_sitename, text_country, text_psi, text_majorpollutant, text_status, text_so2, text_co, text_o3, text_pm10,
@@ -83,30 +83,30 @@ public class AirFragment extends Fragment {
     }
 
     public void updateData() {
-        if (MainActivity.mAirReport != null) {
-            text_sitename.setText(MainActivity.mAirReport.get(0).getSiteName());
-            text_country.setText(MainActivity.mAirReport.get(0).getCounty());
-            text_psi.setText(MainActivity.mAirReport.get(0).getPSI());
-            majorpollutant = MainActivity.mAirReport.get(0).getMajorPollutant();
+        if (AirService.mAirReport != null) {
+            text_sitename.setText(AirService.mAirReport.get(0).getSiteName());
+            text_country.setText(AirService.mAirReport.get(0).getCounty());
+            text_psi.setText(AirService.mAirReport.get(0).getPSI());
+            majorpollutant = AirService.mAirReport.get(0).getMajorPollutant();
             if(majorpollutant.compareTo("") == 0) {
                 text_majorpollutant.setText("無空氣汙染指標物");
             } else {
-                text_majorpollutant.setText(MainActivity.mAirReport.get(0).getMajorPollutant());
+                text_majorpollutant.setText(AirService.mAirReport.get(0).getMajorPollutant());
             }
-            text_status.setText(MainActivity.mAirReport.get(0).getStatus());
-            text_so2.setText(MainActivity.mAirReport.get(0).getSO2());
-            text_co.setText(MainActivity.mAirReport.get(0).getCO());
-            text_o3.setText(MainActivity.mAirReport.get(0).getO3());
-            text_pm10.setText(MainActivity.mAirReport.get(0).getPM10());
-            text_pm25.setText(MainActivity.mAirReport.get(0).getPM25());
-            text_no2.setText(MainActivity.mAirReport.get(0).getNO2());
-            text_windspeed.setText(MainActivity.mAirReport.get(0).getWindSpeed());
-            text_winddirec.setText(MainActivity.mAirReport.get(0).getWindDirec());
-            text_fpmi.setText(MainActivity.mAirReport.get(0).getFPMI());
-            text_no.setText(MainActivity.mAirReport.get(0).getNO());
-            text_nox.setText(MainActivity.mAirReport.get(0).getNOx());
-            text_publishtime.setText(MainActivity.mAirReport.get(0).getPublishTime());
-            Log.e("AirFragment", MainActivity.mAirReport.get(0).getCounty());
+            text_status.setText(AirService.mAirReport.get(0).getStatus());
+            text_so2.setText(AirService.mAirReport.get(0).getSO2());
+            text_co.setText(AirService.mAirReport.get(0).getCO());
+            text_o3.setText(AirService.mAirReport.get(0).getO3());
+            text_pm10.setText(AirService.mAirReport.get(0).getPM10());
+            text_pm25.setText(AirService.mAirReport.get(0).getPM25());
+            text_no2.setText(AirService.mAirReport.get(0).getNO2());
+            text_windspeed.setText(AirService.mAirReport.get(0).getWindSpeed());
+            text_winddirec.setText(AirService.mAirReport.get(0).getWindDirec());
+            text_fpmi.setText(AirService.mAirReport.get(0).getFPMI());
+            text_no.setText(AirService.mAirReport.get(0).getNO());
+            text_nox.setText(AirService.mAirReport.get(0).getNOx());
+            text_publishtime.setText(AirService.mAirReport.get(0).getPublishTime());
+            Log.e("AirFragment", AirService.mAirReport.get(0).getCounty());
 
         }
     }

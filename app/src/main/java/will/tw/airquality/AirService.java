@@ -17,7 +17,6 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -28,7 +27,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import will.tw.airquality.air.api.AirApi;
 import will.tw.airquality.air.model.AirReport;
-import will.tw.airquality.fragment.AirFragment;
 import will.tw.airquality.station.api.StationApi;
 import will.tw.airquality.station.model.StationReport;
 
@@ -43,7 +41,9 @@ public class AirService extends Service {
     private Handler handler = new Handler();
     public static ArrayList<AirReport> mAirReport;
 
+    private SplashActivity splashActivity;
     public AirService(){
+
 
     }
 
@@ -71,8 +71,14 @@ public class AirService extends Service {
         cityname = testLocationProvider();
         Log.e("William service", cityname);
         StationSys("County eq \'"+cityname+"\'");
-        Intent broadIntent = new Intent();
-        broadIntent.putExtra("repo", mAirReport);
+
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                StationSys("County eq \'"+cityname+"\'");
+//                super.run();
+//            }
+//        }.start();
     }
 
     /**
@@ -248,6 +254,7 @@ public class AirService extends Service {
             text=report.get(0).getSiteName();
             Log.e("countory Service",text);
             mAirReport = report;
+
         }
     }
 
