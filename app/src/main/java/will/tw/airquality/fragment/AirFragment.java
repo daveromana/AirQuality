@@ -63,18 +63,8 @@ public class AirFragment extends Fragment {
         text_no = (TextView) view.findViewById(R.id.no);
         text_nox = (TextView) view.findViewById(R.id.nox);
         text_publishtime = (TextView) view.findViewById(R.id.publishtime);
-//        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-
 
     }
-    //    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-//        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-////        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-//        return rootView;
-//    }
-
 
     @Override
     public void onResume() {

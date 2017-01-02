@@ -249,7 +249,6 @@ public class AirService extends Service {
 
         @Override
         public void onNext(ArrayList<AirReport> report) {
-//            probar();
             String text;
             text=report.get(0).getSiteName();
             Log.e("countory Service",text);

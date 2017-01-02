@@ -116,14 +116,6 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
 
-//    public void probar() {
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                progressBar.setVisibility(View.INVISIBLE);
-//            }
-//        });
-//    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
         public void run() {
             // ----------模拟耗时的操作，开始---------------
             while (AirService.mAirReport == null) {
-                Log.i(TAG, "thread running!");
+                Log.e(TAG, "thread running!");
                 try {
                     Thread.sleep(200);
                     Intent intent = new Intent(SplashActivity.this, AirService.class);
@@ -60,6 +60,13 @@ public class SplashActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         new MyTask().execute(null, null, null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacks(mBackgroundRunnable);
+        Log.e("William HandlerThread", "Destroy");
     }
 
     public class MyTask extends AsyncTask<Void, Void, Void> {
