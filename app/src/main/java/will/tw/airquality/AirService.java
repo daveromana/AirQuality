@@ -12,7 +12,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.ResultReceiver;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -27,9 +26,9 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import will.tw.airquality.air.api.AirApi;
+import will.tw.airquality.air.model.Record;
 import will.tw.airquality.air.model.AirReport;
 import will.tw.airquality.station.api.StationApi;
-import will.tw.airquality.station.model.Record;
 import will.tw.airquality.station.model.StationReport;
 
 /**
@@ -41,10 +40,8 @@ public class AirService extends Service {
 
     public static String sitename = "";
     private Handler handler = new Handler();
-    public static  ArrayList<will.tw.airquality.air.model.Record> mAirReport;
-
-    private Intent intent;
-    private SplashActivity splashActivity;
+    public static  ArrayList<Record> mAirReport;
+    private   ArrayList<will.tw.airquality.station.model.Record> stationreports;
     public AirService(){
 
 
@@ -76,14 +73,6 @@ public class AirService extends Service {
         cityname = testLocationProvider();
         Log.e("William service", cityname);
         StationSys("{County:"+cityname+"}");
-
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                StationSys("County eq \'"+cityname+"\'");
-//                super.run();
-//            }
-//        }.start();
     }
 
     /**
@@ -184,19 +173,19 @@ public class AirService extends Service {
 
         @Override
         public void onNext(StationReport report) {
-            ArrayList<Record> reports = report.getResult().getRecords();
+            stationreports = report.getResult().getRecords();
             Double lat;
             Double lon;
             Double nowlat = AirService.mLatitude;
             Double nowlon = AirService.mLongitude;
             Double mindisten = 99999999999999.9;
-            for (int i= 0; i<reports.size(); i ++){
-                lat = Double.valueOf(reports.get(i).getTWD97Lat());
-                lon = Double.valueOf(reports.get(i).getTWD97Lon());
+            for (int i= 0; i<stationreports.size(); i ++){
+                lat = Double.valueOf(stationreports.get(i).getTWD97Lat());
+                lon = Double.valueOf(stationreports.get(i).getTWD97Lon());
                 Double sum = (nowlat - lat)*(nowlat - lat)+(nowlon - lon)*(nowlon - lon);
                 Double distence = Math.sqrt(sum);
                 if (distence<mindisten){
-                    sitename = reports.get(i).getSiteName();
+                    sitename = stationreports.get(i).getSiteName();
                     mindisten = distence;
                 }
 //                mindisten = Math.min(distence, mindisten);
@@ -234,21 +223,14 @@ public class AirService extends Service {
         @Override
         public void onError(Throwable e) {
             Log.e("onRrror",e.toString());
-            handler.postDelayed(new Runnable(){
-                @Override
-                public void run() {
-                    StationSys("County eq \'"+AirService.cityname+"\'");
-                    //過兩秒後要做的事情
-                    Log.d("tag","onError AirSubscriber");
-
-                }}, 5000);
+            Log.e("onErroor", "AirSubscriber Error");
 
         }
 
 
         @Override
-        public void onNext(AirReport report) {
-            ArrayList<will.tw.airquality.air.model.Record> airreports = report.getResult().getRecords();
+        public void onNext(AirReport airReport) {
+            ArrayList<Record> airreports = airReport.getResult().getRecords();
             String text;
             text=airreports.get(0).getSiteName();
             Log.e("countory Service",text);

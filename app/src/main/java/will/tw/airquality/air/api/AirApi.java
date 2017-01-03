@@ -3,11 +3,8 @@ package will.tw.airquality.air.api;
 /**
  * Created by william on 2016/12/28.
  */
-import android.app.Application;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import okhttp3.OkHttpClient;

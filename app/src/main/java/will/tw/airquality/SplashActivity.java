@@ -44,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
             while (AirService.mAirReport == null) {
                 Log.e(TAG, "thread running!");
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(1000);
                     Intent intent = new Intent(SplashActivity.this, AirService.class);
                     startService(intent);
                     final String Action = "FilterString";

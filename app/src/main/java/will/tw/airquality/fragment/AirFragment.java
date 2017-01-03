@@ -24,7 +24,6 @@ public class AirFragment extends Fragment {
 
     private TextView text_sitename, text_country, text_psi, text_majorpollutant, text_status, text_so2, text_co, text_o3, text_pm10,
             text_pm25, text_no2, text_windspeed, text_winddirec, text_fpmi, text_nox, text_no, text_publishtime;
-    private ProgressBar progressBar;
 
     public static AirFragment newInstance(int sectionNumber, String title) {
         AirFragment fragment = new AirFragment();
