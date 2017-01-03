@@ -24,7 +24,7 @@ import will.tw.airquality.air.model.AirReport;
 public class AirApi {
 
     private static final String BASE_URL = "http://opendata.epa.gov.tw/";
-    private static final String FILTER = "$filter";
+    private static final String FILTER = "filters";
     private static final String FORMAT = "format";
     private static final String KEY_FORMAT ="json";
     private static final String TOKEN = "token";
@@ -57,7 +57,7 @@ public class AirApi {
         return sService;
     }
 
-    public static Observable<ArrayList<AirReport>> findReportByCity(String type) {
+    public static Observable<AirReport> findReportByCity(String type) {
         final Map<String, String> parameters = new HashMap<>();
         parameters.put(FILTER, type);
         parameters.put(FORMAT,KEY_FORMAT);
@@ -66,7 +66,7 @@ public class AirApi {
     }
 
     private interface AirService {
-        @GET("ws/Data/REWXQA/")
-        Observable<ArrayList<AirReport>> findReport(@QueryMap Map<String, String> parameters );
+        @GET("webapi/api/rest/datastore/355000000I-000001/")
+        Observable<AirReport> findReport(@QueryMap Map<String, String> parameters );
     }
 }

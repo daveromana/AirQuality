@@ -36,29 +36,43 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-//
-//    Runnable mBackgroundRunnable = new Runnable() {
-//        @Override
-//        public void run() {
-//            // ----------模拟耗时的操作，开始---------------
-//            while (AirService.mAirReport == null) {
-//                Log.e(TAG, "thread running!");
-//                try {
-//                    Thread.sleep(200);
-//                    Intent intent = new Intent(SplashActivity.this, AirService.class);
-//                    startService(intent);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+
+    Runnable mBackgroundRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // ----------模拟耗时的操作，开始---------------
+            while (AirService.mAirReport == null) {
+                Log.e(TAG, "thread running!");
+                try {
+                    Thread.sleep(200);
+                    Intent intent = new Intent(SplashActivity.this, AirService.class);
+                    startService(intent);
+                    final String Action = "FilterString";
+                    IntentFilter filter = new IntentFilter(Action);
+                    // 將 BroadcastReceiver 在 Activity 掛起來。
+                    registerReceiver(receiver, filter);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Intent intent = new Intent(SplashActivity.this, AirService.class);
+            startService(intent);
+            final String Action = "FilterString";
+            IntentFilter filter = new IntentFilter(Action);
+            // 將 BroadcastReceiver 在 Activity 掛起來。
+            registerReceiver(receiver, filter);
+
+
+
 //            Intent i = new Intent(SplashActivity.this, MainActivity.class);
 //            //通过Intent打开最终真正的主界面Main这个Activity
 //            SplashActivity.this.startActivity(i);    //启动Main界面
 //            SplashActivity.this.finish();    //关闭自己这个开场屏
-//
-//            // ----------模拟耗时的操作，结束---------------
-//        }
-//    };
+
+            // ----------模拟耗时的操作，结束---------------
+        }
+    };
 
 
     @Override
@@ -72,7 +86,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onDestroy();
 
         unregisterReceiver(receiver);
-//        mHandler.removeCallbacks(mBackgroundRunnable);
+        mHandler.removeCallbacks(mBackgroundRunnable);
         Log.e("William HandlerThread", "Destroy");
     }
 
@@ -80,17 +94,17 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
 
-            Intent intent = new Intent(SplashActivity.this, AirService.class);
-            startService(intent);
-
-            final String Action = "FilterString";
-            IntentFilter filter = new IntentFilter(Action);
-            // 將 BroadcastReceiver 在 Activity 掛起來。
-            registerReceiver(receiver, filter);
-//            HandlerThread thread = new HandlerThread("MyHandlerThread");
-//            thread.start();// 创建一个HandlerThread并启动它
-//            mHandler = new Handler(thread.getLooper());// 使用HandlerThread的looper对象创建Handler，如果使用默认的构造方法，很有可能阻塞UI线程
-//            mHandler.post(mBackgroundRunnable);// 将线程post到Handler中
+//            Intent intent = new Intent(SplashActivity.this, AirService.class);
+//            startService(intent);
+//
+//            final String Action = "FilterString";
+//            IntentFilter filter = new IntentFilter(Action);
+//            // 將 BroadcastReceiver 在 Activity 掛起來。
+//            registerReceiver(receiver, filter);
+            HandlerThread thread = new HandlerThread("MyHandlerThread");
+            thread.start();// 创建一个HandlerThread并启动它
+            mHandler = new Handler(thread.getLooper());// 使用HandlerThread的looper对象创建Handler，如果使用默认的构造方法，很有可能阻塞UI线程
+            mHandler.post(mBackgroundRunnable);// 将线程post到Handler中
             return null;
         }
 

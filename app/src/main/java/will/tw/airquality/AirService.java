@@ -18,8 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
-
-import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +29,7 @@ import rx.schedulers.Schedulers;
 import will.tw.airquality.air.api.AirApi;
 import will.tw.airquality.air.model.AirReport;
 import will.tw.airquality.station.api.StationApi;
+import will.tw.airquality.station.model.Record;
 import will.tw.airquality.station.model.StationReport;
 
 /**
@@ -42,7 +41,7 @@ public class AirService extends Service {
 
     public static String sitename = "";
     private Handler handler = new Handler();
-    public static ArrayList<AirReport> mAirReport;
+    public static  ArrayList<will.tw.airquality.air.model.Record> mAirReport;
 
     private Intent intent;
     private SplashActivity splashActivity;
@@ -76,7 +75,7 @@ public class AirService extends Service {
         super.onCreate();
         cityname = testLocationProvider();
         Log.e("William service", cityname);
-        StationSys("County eq \'"+cityname+"\'");
+        StationSys("{County:"+cityname+"}");
 
 //        new Thread() {
 //            @Override
@@ -172,7 +171,7 @@ public class AirService extends Service {
     }
 
 
-    private class StationSubscriber extends Subscriber<ArrayList<StationReport>> {
+    private class StationSubscriber extends Subscriber<StationReport> {
         @Override
         public void onCompleted() {
         }
@@ -181,30 +180,23 @@ public class AirService extends Service {
         public void onError(Throwable e) {
             Log.e("onRrror",e.toString());
             onCreate();
-//            handler.postDelayed(new Runnable(){
-//                @Override
-//                public void run() {
-//                    StationSys("County eq \'"+AirService.cityname+"\'");
-//                    //過兩秒後要做的事情
-//                    Log.d("tag","onError StationSubscriber");
-//
-//                }}, 5000);
         }
 
         @Override
-        public void onNext(ArrayList<StationReport> report) {
+        public void onNext(StationReport report) {
+            ArrayList<Record> reports = report.getResult().getRecords();
             Double lat;
             Double lon;
             Double nowlat = AirService.mLatitude;
             Double nowlon = AirService.mLongitude;
             Double mindisten = 99999999999999.9;
-            for (int i= 0; i<report.size(); i ++){
-                lat = Double.valueOf(report.get(i).getTWD97Lat());
-                lon = Double.valueOf(report.get(i).getTWD97Lon());
+            for (int i= 0; i<reports.size(); i ++){
+                lat = Double.valueOf(reports.get(i).getTWD97Lat());
+                lon = Double.valueOf(reports.get(i).getTWD97Lon());
                 Double sum = (nowlat - lat)*(nowlat - lat)+(nowlon - lon)*(nowlon - lon);
                 Double distence = Math.sqrt(sum);
                 if (distence<mindisten){
-                    sitename = report.get(i).getSiteName();
+                    sitename = reports.get(i).getSiteName();
                     mindisten = distence;
                 }
 //                mindisten = Math.min(distence, mindisten);
@@ -213,7 +205,7 @@ public class AirService extends Service {
             handler.postDelayed(new Runnable(){
                 @Override
                 public void run() {
-                    sysus("SiteName eq \'"+sitename+"\'");
+                    sysus("{SiteName:"+sitename+"}");
                     Log.d("tag","de sysus");
                 }}, 500);
         }
@@ -234,7 +226,7 @@ public class AirService extends Service {
 
 
 
-    private class AirSubscriber extends Subscriber<ArrayList<AirReport>> {
+    private class AirSubscriber extends Subscriber<AirReport> {
         @Override
         public void onCompleted() {
         }
@@ -255,11 +247,12 @@ public class AirService extends Service {
 
 
         @Override
-        public void onNext(ArrayList<AirReport> report) {
+        public void onNext(AirReport report) {
+            ArrayList<will.tw.airquality.air.model.Record> airreports = report.getResult().getRecords();
             String text;
-            text=report.get(0).getSiteName();
+            text=airreports.get(0).getSiteName();
             Log.e("countory Service",text);
-            mAirReport = report;
+            mAirReport = airreports;
 
             Bundle message = new Bundle();
             message.putInt("KeyOne", 1);

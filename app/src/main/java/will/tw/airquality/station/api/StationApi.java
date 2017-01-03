@@ -19,11 +19,13 @@ import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
 import rx.Observable;
 import will.tw.airquality.BuildConfig;
+import will.tw.airquality.station.model.Record;
+import will.tw.airquality.station.model.Result;
 import will.tw.airquality.station.model.StationReport;
 
 public class StationApi {
     private static final String BASE_URL = "http://opendata.epa.gov.tw/";
-    private static final String FILTER = "$filter";
+    private static final String FILTER = "filters";
     private static final String FORMAT = "format";
     private static final String KEY_FORMAT ="json";
     private static final String TOKEN = "token";
@@ -55,7 +57,7 @@ public class StationApi {
         return sService;
     }
 
-    public static Observable<ArrayList<StationReport>> findReportByCity(String type) {
+    public static Observable<StationReport> findReportByCity(String type) {
         final Map<String, String> parameters = new HashMap<>();
         parameters.put(FILTER, type);
         parameters.put(FORMAT,KEY_FORMAT);
@@ -64,7 +66,7 @@ public class StationApi {
     }
 
     private interface AirService {
-        @GET("ws/Data/AQXSite/")
-        Observable<ArrayList<StationReport>> findReport(@QueryMap Map<String, String> parameters );
+        @GET("webapi/api/rest/datastore/355000000I-000005/")
+        Observable<StationReport> findReport(@QueryMap Map<String, String> parameters );
     }
 }
