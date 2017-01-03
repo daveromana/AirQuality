@@ -40,6 +40,7 @@ public class AirApi {
                 HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
                 logging.setLevel(HttpLoggingInterceptor.Level.BODY);
                 httpClient = new OkHttpClient.Builder().addInterceptor(logging).build();
+
             }
 
             final Retrofit retrofit =

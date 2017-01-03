@@ -9,14 +9,17 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.ResultReceiver;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -41,6 +44,7 @@ public class AirService extends Service {
     private Handler handler = new Handler();
     public static ArrayList<AirReport> mAirReport;
 
+    private Intent intent;
     private SplashActivity splashActivity;
     public AirService(){
 
@@ -59,7 +63,9 @@ public class AirService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
 //        station = StationSys("County eq \'"+cityname+"\'");
-
+//        cityname = testLocationProvider();
+//        Log.e("William service", cityname);
+//        StationSys("County eq \'"+cityname+"\'");
         return super.onStartCommand(intent, flags, startId);
 
 
@@ -174,14 +180,15 @@ public class AirService extends Service {
         @Override
         public void onError(Throwable e) {
             Log.e("onRrror",e.toString());
-            handler.postDelayed(new Runnable(){
-                @Override
-                public void run() {
-                    StationSys("County eq \'"+AirService.cityname+"\'");
-                    //過兩秒後要做的事情
-                    Log.d("tag","onError StationSubscriber");
-
-                }}, 5000);
+            onCreate();
+//            handler.postDelayed(new Runnable(){
+//                @Override
+//                public void run() {
+//                    StationSys("County eq \'"+AirService.cityname+"\'");
+//                    //過兩秒後要做的事情
+//                    Log.d("tag","onError StationSubscriber");
+//
+//                }}, 5000);
         }
 
         @Override
@@ -254,6 +261,13 @@ public class AirService extends Service {
             Log.e("countory Service",text);
             mAirReport = report;
 
+            Bundle message = new Bundle();
+            message.putInt("KeyOne", 1);
+            Intent intent = new Intent("FilterString");
+            intent.putExtras(message);
+            sendBroadcast(intent);
+
+            stopSelf();
         }
     }
 
