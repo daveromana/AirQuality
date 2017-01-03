@@ -24,6 +24,8 @@ public class UvApi {
     private static final String FILTER = "$filter";
     private static final String FORMAT = "format";
     private static final String KEY_FORMAT ="json";
+    private static final String TOKEN = "token";
+    private static final String KEY_TOKEN = "FmMrns2zGE+q6Pqe7s1xpA";
 
     private static UvService sService;
 
@@ -55,6 +57,7 @@ public class UvApi {
         final Map<String, String> parameters = new HashMap<>();
         parameters.put(FILTER, type);
         parameters.put(FORMAT,KEY_FORMAT);
+        parameters.put(TOKEN,KEY_TOKEN);
         return getService().findReport(parameters);
     }
 
