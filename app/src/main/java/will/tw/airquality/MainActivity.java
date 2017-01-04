@@ -15,8 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import will.tw.airquality.fragment.AirFragment;
+import java.util.ArrayList;
 
+import rx.Scheduler;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import will.tw.airquality.fragment.AirFragment;
+import will.tw.airquality.fragment.UvFragment;
+import will.tw.airquality.uv.api.UvApi;
+import will.tw.airquality.uv.model.Record;
+import will.tw.airquality.uv.model.UvReport;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,15 +33,16 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
 
+    private String uvsitename;
+
+    public static ArrayList<Record> mUVReport;
 
     private static final int FRG_AIR_POS = 0;
     private static final int FRG_UV_POS = 1;
     private static final int FRG_WEATHER_POS = 2;
-    private MainActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -46,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        uvsysus("{County:"+AirService.cityname+"}");
+
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -98,9 +111,16 @@ public class MainActivity extends AppCompatActivity {
     public void notifyFrgamentDataChanged() {
         Fragment airfrg = mSectionsPagerAdapter.getActiveFragment(mViewPager, FRG_AIR_POS);
         if (airfrg instanceof AirFragment) {
-            AirFragment fr = (AirFragment) airfrg;
-            fr.updateData();
-            Log.d("William", "RobotFragment.updateData()!");
+            AirFragment airfr = (AirFragment) airfrg;
+            airfr.updateData();
+            Log.d("William", "AirFragment.updateData()!");
+        }
+
+        Fragment uvfrg = mSectionsPagerAdapter.getActiveFragment(mViewPager, FRG_UV_POS);
+        if (uvfrg instanceof UvFragment) {
+            UvFragment uvfr = (UvFragment) uvfrg;
+            uvfr.updateData();
+            Log.d("William", "UVFragment.updateData()!");
         }
 //
 //        Fragment accountfrg = mSectionsPagerAdapter.getActiveFragment(mViewPager, FRG_ACCOUNT_POS);
@@ -147,8 +167,8 @@ public class MainActivity extends AppCompatActivity {
             switch (position) {
                 case FRG_AIR_POS:
                     return AirFragment.newInstance(FRG_AIR_POS, "AirQuality");
-//                case FRG_UV_POS:
-//                    return RobotFragment.newInstance(FRG_ROBOT_POS, "Robot");\
+                case FRG_UV_POS:
+                    return UvFragment.newInstance(FRG_UV_POS, "UVQuality");
 //                case FRG_WEATHER_POS:
 //                    return
                 default:
@@ -218,6 +238,93 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
+    }
+
+
+    private class UVSubscriber extends Subscriber<UvReport> {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.e("onRrror",e.toString());
+            Log.e("onErroor", "UvSubscriber Error");
+
+        }
+
+
+        @Override
+        public void onNext(UvReport uvReport) {
+            ArrayList<Record> uvreports = uvReport.getResult().getRecords();
+            String strlat;
+            String strlon;
+            Double lat;
+            Double lon;
+            Double nowlat = AirService.mLatitude;
+            Double nowlon = AirService.mLongitude;
+            Double mindisten = 99999999999999.9;
+            for (int i= 0; i<uvreports.size(); i ++){
+                strlat = uvreports.get(i).getWGS84Lat().replace(",","").replace(".","");
+                strlon = uvreports.get(i).getWGS84Lon().replace(",","").replace(".","");
+                lat = Double.valueOf(strlat.substring(0,2)+"."+strlat.substring(2,strlat.length()));
+                lon = Double.valueOf(strlon.substring(0,3)+"."+strlon.substring(3,strlon.length()));
+                Double sum = (nowlat - lat)*(nowlat - lat)+(nowlon - lon)*(nowlon - lon);
+                Double distence = Math.sqrt(sum);
+                if (distence<mindisten){
+                    uvsitename = uvreports.get(i).getSiteName();
+                    mindisten = distence;
+                }
+                mindisten = Math.min(distence, mindisten);
+            }
+            Log.e("William UV", uvsitename);
+
+            uvsitenamesysus("{SiteName:"+uvsitename+"}");
+
+
+        }
+    }
+
+    public void uvsysus(String type) {
+        final Scheduler newThread = Schedulers.newThread();
+        final Scheduler mainThread = AndroidSchedulers.mainThread();
+        UVSubscriber subscriber = new UVSubscriber();
+        UvApi.findReportByCity(type)
+                .subscribeOn(newThread)
+                .observeOn(mainThread)
+                .subscribe(subscriber);
+    }
+
+    private class UVSiteSubscriber extends Subscriber<UvReport> {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.e("onRrror",e.toString());
+            Log.e("onErroor", "UvStationSubscriber Error");
+
+        }
+
+
+        @Override
+        public void onNext(UvReport uvReport) {
+            ArrayList<Record> uvstationreports = uvReport.getResult().getRecords();
+            mUVReport = uvstationreports;
+
+            Log.e("UVSiteName Finish", mUVReport.get(0).getSiteName());
+        }
+    }
+
+    public void uvsitenamesysus(String type) {
+        final Scheduler newThread = Schedulers.newThread();
+        final Scheduler mainThread = AndroidSchedulers.mainThread();
+        UVSiteSubscriber subscriber = new UVSiteSubscriber();
+        UvApi.findReportByCity(type)
+                .subscribeOn(newThread)
+                .observeOn(mainThread)
+                .subscribe(subscriber);
     }
 
 

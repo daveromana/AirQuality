@@ -21,7 +21,7 @@ import will.tw.airquality.uv.model.UvReport;
 public class UvApi {
 
     private static final String BASE_URL = "http://opendata.epa.gov.tw/";
-    private static final String FILTER = "$filter";
+    private static final String FILTER = "filters";
     private static final String FORMAT = "format";
     private static final String KEY_FORMAT ="json";
     private static final String TOKEN = "token";
@@ -62,7 +62,7 @@ public class UvApi {
     }
 
     private interface UvService {
-        @GET("ws/Data/UV/")
+        @GET("webapi/api/rest/datastore/355000000I-000004/")
         Observable<UvReport> findReport(@QueryMap Map<String, String> parameters );
     }
 }

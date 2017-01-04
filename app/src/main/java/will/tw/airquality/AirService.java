@@ -1,6 +1,7 @@
 package will.tw.airquality;
 
 import android.Manifest;
+import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,44 +36,34 @@ import will.tw.airquality.station.model.StationReport;
  * Created by Ashbar on 2016/12/31.
  */
 
-public class AirService extends Service {
+public class AirService extends IntentService {
     public static String cityname;
 
     public static String sitename = "";
     private Handler handler = new Handler();
     public static  ArrayList<Record> mAirReport;
     private   ArrayList<will.tw.airquality.station.model.Record> stationreports;
-    public AirService(){
 
 
+    public AirService() {
+        super("Retrofit");
     }
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        cityname = testLocationProvider();
-//        Log.e("William service", cityname);
-        return null;
-    }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-//        station = StationSys("County eq \'"+cityname+"\'");
-//        cityname = testLocationProvider();
-//        Log.e("William service", cityname);
-//        StationSys("County eq \'"+cityname+"\'");
-        return super.onStartCommand(intent, flags, startId);
-
-
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    protected void onHandleIntent(Intent intent) {
         cityname = testLocationProvider();
         Log.e("William service", cityname);
         StationSys("{County:"+cityname+"}");
+    }
+
+//
+    @Override
+    public void onCreate() {
+        super.onCreate();
+//        cityname = testLocationProvider();
+//        Log.e("William service", cityname);
+//        StationSys("{County:"+cityname+"}");
     }
 
     /**
