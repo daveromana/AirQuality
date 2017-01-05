@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        uvsysus("{County:"+AirService.cityname+"}");
+        uvsysus("{County:"+SplashActivity.Addresscode+"}");
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 //        new MyTask().execute(null, null, null);
-        notifyFrgamentDataChanged();
+
 
     }
 
@@ -261,8 +261,8 @@ public class MainActivity extends AppCompatActivity {
             String strlon;
             Double lat;
             Double lon;
-            Double nowlat = AirService.mLatitude;
-            Double nowlon = AirService.mLongitude;
+            Double nowlat = SplashActivity.lat;
+            Double nowlon = SplashActivity.lon;
             Double mindisten = 99999999999999.9;
             for (int i= 0; i<uvreports.size(); i ++){
                 strlat = uvreports.get(i).getWGS84Lat().replace(",","").replace(".","");
@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
         public void onNext(UvReport uvReport) {
             ArrayList<Record> uvstationreports = uvReport.getResult().getRecords();
             mUVReport = uvstationreports;
-
+            notifyFrgamentDataChanged();
             Log.e("UVSiteName Finish", mUVReport.get(0).getSiteName());
         }
     }
