@@ -1,6 +1,7 @@
 package will.tw.airquality.gms;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -27,18 +28,30 @@ import will.tw.airquality.SplashActivity;
 
 public class location implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    public static Double lon,lat;
-    public static String Addresscode;
+    private Double lon, lat;
+    private String Addresscode;
     public static GoogleApiClient mGoogleApiClient;
     public Location mLastLocation;
-    private SplashActivity activity;
+    public List<Address> lstAddress;
+    public MyLocationCallBack callBack;
+//    private SplashActivity activity;
+
+    private Context activity;
 
 
+    public void init (Context activity) {
+        this.activity = activity;
+    }
 
+    public void connect(){
+        mGoogleApiClient.connect();
+    }
 
+    public void disconnect(){
+        mGoogleApiClient.disconnect();
+    }
 
-    public void buildGoogleApiClient()
-    {
+    public void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(activity)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -64,24 +77,38 @@ public class location implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
 
         try {
 
-            if (mLastLocation != null)
-            {
+            if (mLastLocation != null) {
                 lat = mLastLocation.getLatitude();
                 lon = mLastLocation.getLongitude();
-                Log.e("google service :" , lat+":"+lon);
+                Log.e("google service :", lat + ":" + lon);
                 Geocoder gc = new Geocoder(activity, Locale.getDefault());    //Ša°Ï:¥xÆW
-                List<Address> lstAddress = gc.getFromLocation(lat, lon, 1);
+                lstAddress = gc.getFromLocation(lat, lon, 1);
                 Addresscode = lstAddress.get(0).getAdminArea();
-                Log.e("google Geocode :" , Addresscode);
-            }
-            else
-            {
+                if (Addresscode.compareTo("台北市") == 0) {
+                    Addresscode = "臺北市";
+                } else if (Addresscode.compareTo("台東市") == 0) {
+                    Addresscode = "臺東市";
+                } else if (Addresscode.compareTo("台東縣") == 0) {
+                    Addresscode = "臺東縣";
+                } else if (Addresscode.compareTo("台南市") == 0) {
+                    Addresscode = "臺南市";
+                } else if (Addresscode.compareTo("台中市") == 0) {
+                    Addresscode = "臺中市";
+                } else {
+                    Addresscode = lstAddress.get(0).getAdminArea();
+                }
+                Log.e("new google Geocode :", Addresscode);
+
+
+            } else {
                 Toast.makeText(activity, "偵測不到定位，請確認定位功能已開啟。", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        callBack.done(Addresscode,lat,lon);
+//        callBack.latlondone(lat,lon);
     }
 
     @Override
@@ -95,4 +122,20 @@ public class location implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
         Log.i("GMS Service error", "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
 
     }
+
+
+    public void addLinstner(MyLocationCallBack Linstner){
+        callBack = Linstner;
+    }
+
+
+    public interface MyLocationCallBack{
+        void done(String CityName,Double Lat, Double Lon);
+//        void latlondone(Double Lat, Double Lon);
+    }
+
+
+
+
+
 }

@@ -1,5 +1,6 @@
 package will.tw.airquality;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -23,9 +24,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import will.tw.airquality.fragment.AirFragment;
 import will.tw.airquality.fragment.UvFragment;
+import will.tw.airquality.gms.location;
 import will.tw.airquality.uv.api.UvApi;
 import will.tw.airquality.uv.model.Record;
 import will.tw.airquality.uv.model.UvReport;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int FRG_AIR_POS = 0;
     private static final int FRG_UV_POS = 1;
     private static final int FRG_WEATHER_POS = 2;
+    private String mdonecity;
+    private Double donelan,donelat;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +63,11 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        uvsysus("{County:"+SplashActivity.Addresscode+"}");
+        Intent i = this.getIntent();
+        mdonecity = i.getStringExtra("donecity");
+        donelan = i.getDoubleExtra("donelon", 0);
+        donelat = i.getDoubleExtra("donelat", 0);
+        uvsysus("{County:"+ mdonecity+"}");
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -70,13 +80,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     public class MyTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
-//            location = new location(activity);
-//            cityname = location.testLocationProvider();
-            Log.e("WOWOWOOWOWOWO", AirService.cityname);
-//            StationSys("County eq \'"+AirService.cityname+"\'");
+
             return null;
         }
 
@@ -261,8 +270,8 @@ public class MainActivity extends AppCompatActivity {
             String strlon;
             Double lat;
             Double lon;
-            Double nowlat = SplashActivity.lat;
-            Double nowlon = SplashActivity.lon;
+            Double nowlat = donelat;
+            Double nowlon = donelan;
             Double mindisten = 99999999999999.9;
             for (int i= 0; i<uvreports.size(); i ++){
                 strlat = uvreports.get(i).getWGS84Lat().replace(",","").replace(".","");

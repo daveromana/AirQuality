@@ -1,6 +1,7 @@
 package will.tw.airquality.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,8 +13,12 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import will.tw.airquality.AirService;
+import will.tw.airquality.MainActivity;
 import will.tw.airquality.R;
+import will.tw.airquality.air.model.Record;
 
 /**
  * Created by william on 2016/12/30.
@@ -22,6 +27,7 @@ import will.tw.airquality.R;
 public class AirFragment extends Fragment {
     private String majorpollutant;
 
+    private ArrayList<Record> airreport;
     private TextView text_sitename, text_country, text_psi, text_majorpollutant, text_status, text_so2, text_co, text_o3, text_pm10,
             text_pm25, text_no2, text_windspeed, text_winddirec, text_fpmi, text_nox, text_no, text_publishtime;
 
