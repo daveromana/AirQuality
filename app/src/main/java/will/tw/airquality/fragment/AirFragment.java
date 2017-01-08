@@ -53,10 +53,10 @@ public class AirFragment extends Fragment {
         return inflater.inflate(R.layout.air_layout, container, false);
     }
 
-    @Subscribe(threadMode = ThreadMode.MainThread)
-    public void helloEventBus(AirService.ReportEvent intent){
-        Log.e("wvwnBus",intent.intent.get(0).getCounty());
-    }
+//    @Subscribe(threadMode = ThreadMode.MainThread)
+//    public void helloEventBus(AirService.ReportEvent intent){
+//        Log.e("wvwnBus",intent.intent.get(0).getCounty());
+//    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

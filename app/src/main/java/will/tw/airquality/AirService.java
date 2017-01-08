@@ -81,14 +81,14 @@ public class AirService extends IntentService {
         }
     }
 
-    public class ReportEvent {
-
-        public ArrayList<Record> intent;
-
-        public ReportEvent(ArrayList<Record> message){
-            this.intent=message;
-        }
-    }
+//    public class ReportEvent {
+//
+//        public ArrayList<Record> intent;
+//
+//        public ReportEvent(ArrayList<Record> message){
+//            this.intent=message;
+//        }
+//    }
 
 
     private class StationSubscriber extends Subscriber<StationReport> {
@@ -163,7 +163,7 @@ public class AirService extends IntentService {
             text = airreports.get(0).getSiteName();
             Log.e("countory Service", text);
             mAirReport = airreports;
-            EventBus.getDefault().post(new ReportEvent(airreports));
+//            EventBus.getDefault().post(new ReportEvent(airreports));
             new MyServerThread().start();
             stopSelf();
         }

@@ -90,7 +90,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         gmslocation.disconnect();
-//        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
         Log.e("William HandlerThread", "Destroy");
     }
 
