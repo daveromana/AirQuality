@@ -20,6 +20,7 @@ import com.google.android.gms.location.LocationServices;
 import java.util.List;
 import java.util.Locale;
 
+import de.greenrobot.event.EventBus;
 import will.tw.airquality.SplashActivity;
 
 /**
@@ -30,12 +31,9 @@ public class location implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
 
     private Double lon, lat;
     private String Addresscode;
-    public static GoogleApiClient mGoogleApiClient;
-    public Location mLastLocation;
-    public List<Address> lstAddress;
-    public MyLocationCallBack callBack;
-//    private SplashActivity activity;
-
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    private List<Address> lstAddress;
     private Context activity;
 
 
@@ -107,9 +105,26 @@ public class location implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
             e.printStackTrace();
         }
 
-        callBack.done(Addresscode,lat,lon);
 //        callBack.latlondone(lat,lon);
+        EventBus.getDefault().post(new MessageEvent(Addresscode,lat,lon));
+
     }
+
+//    public location(String Addresscode,Double lat, Double lon) {
+//        this.Addresscode = Addresscode;
+//        this.lat = lat;
+//        this.lon = lon;
+//    }
+//
+//    public class MessageEvent {
+//        public final String evenaddress;
+//        public final Double evenlat, evenlon;
+//        public MessageEvent(String evenaddress,Double evenlat, Double evenlon) {
+//            this.evenaddress = Addresscode;
+//            this.evenlat = lat;
+//            this.evenlon = lon;
+//        }
+//    }
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -122,20 +137,4 @@ public class location implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
         Log.i("GMS Service error", "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
 
     }
-
-
-    public void addLinstner(MyLocationCallBack Linstner){
-        callBack = Linstner;
-    }
-
-
-    public interface MyLocationCallBack{
-        void done(String CityName,Double Lat, Double Lon);
-//        void latlondone(Double Lat, Double Lon);
-    }
-
-
-
-
-
 }

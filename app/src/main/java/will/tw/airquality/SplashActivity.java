@@ -19,7 +19,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import will.tw.airquality.air.model.Record;
+import will.tw.airquality.gms.MessageEvent;
 import will.tw.airquality.gms.location;
 
 
@@ -27,14 +31,12 @@ import will.tw.airquality.gms.location;
  * Created by Ashbar on 2016/12/31.
  */
 
-public class SplashActivity extends AppCompatActivity implements location.MyLocationCallBack {
+public class SplashActivity extends AppCompatActivity {
 
 
-    private Double mlon, mlat;
     private location gmslocation;
-    private String mCityName;
-    private Serializable Airreport;
-    private ArrayList donereport;
+    private Double acevlaat, acevlon;
+    private String acevcity;
 
 
     @Override
@@ -45,26 +47,50 @@ public class SplashActivity extends AppCompatActivity implements location.MyLoca
         setContentView(R.layout.splash);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        buildGoogleApiClient();
-
+        EventBus.getDefault().register(this);
         gmslocation = new location();
         gmslocation.init(this);
         gmslocation.buildGoogleApiClient();
-        gmslocation.addLinstner(this);
+    }
+//
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(MessageEvent message){
+        Log.e("wvwnBus",message.evenaddress+"."+message.evenlat+"."+message.evenlon);
+        acevcity = message.evenaddress;
+        acevlaat = message.evenlat;
+        acevlon = message.evenlon;
+        Intent intent = new Intent(SplashActivity.this, AirService.class);
+//            Log.e("CallBack", mCityName);
+        intent.putExtra("city", acevcity );
+        intent.putExtra("lat", acevlaat);
+        intent.putExtra("lon", acevlon);
+        startService(intent);
+    }
 
+    @Subscribe(threadMode = ThreadMode.BackgroundThread)
+    public void startEventBus(AirService.ActivityEvent activityEvent) {
+        if (activityEvent.intent.compareTo("Start")==0){
+            Intent i = new Intent(SplashActivity.this, MainActivity.class);
+            //通过Intent打开最终真正的主界面Main这个Activity
+            i.putExtra("donecity", acevcity);
+            i.putExtra("donelat", acevlaat);
+            i.putExtra("donelon", acevlon);
+            SplashActivity.this.startActivity(i);    //启动Main界面
+            SplashActivity.this.finish();    //关闭自己这个开场屏
+        }
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
-//        gmslocation.disconnect();
+        gmslocation.disconnect();
+//        EventBus.getDefault().unregister(this);
         Log.e("William HandlerThread", "Destroy");
     }
 
@@ -73,71 +99,5 @@ public class SplashActivity extends AppCompatActivity implements location.MyLoca
         super.onStart();
         gmslocation.connect();
     }
-
-    @Override
-    public void done(String CityName,Double Lat, Double Lon) {
-        mlon = Lon;
-        mlat = Lat;
-        mCityName = CityName;
-        new MyTask().execute(null, null, null);
-
-    }
-
-
-    public class MyTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            Intent intent = new Intent(SplashActivity.this, AirService.class);
-            Log.e("CallBack", mCityName);
-            intent.putExtra("city", mCityName);
-            intent.putExtra("lat", mlat);
-            intent.putExtra("lon", mlon);
-            startService(intent);
-            final String Action = "FilterString";
-            IntentFilter filter = new IntentFilter(Action);
-            // 將 BroadcastReceiver 在 Activity 掛起來。
-            registerReceiver(receiver, filter);
-            return null;
-        }
-
-        protected void onProgressUpdate(Void... progress) {
-            // in main thread
-        }
-
-        protected void onPostExecute(Void result) {
-            // in main thread
-
-        }
-
-        protected void onCancelled(Void result) {
-            // in main thread
-        }
-
-    }
-
-
-    BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // 處理 Service 傳來的訊息。
-            Bundle message = intent.getExtras();
-            int value = message.getInt("KeyOne");
-            String strValue = String.valueOf(value);
-
-            ArrayList arrayList = message.getIntegerArrayList("list");
-            ArrayList list2 = (ArrayList<Record>) arrayList.get(0);
-            Log.e("William", list2.ge);
-            if (Objects.equals(strValue, "1")) {
-                Intent i = new Intent(SplashActivity.this, MainActivity.class);
-                //通过Intent打开最终真正的主界面Main这个Activity
-                i.putExtra("donecity", mCityName);
-                i.putExtra("donelat", mlat);
-                i.putExtra("donelon", mlon);
-                SplashActivity.this.startActivity(i);    //启动Main界面
-                SplashActivity.this.finish();    //关闭自己这个开场屏
-            }
-        }
-    };
-
 
 }

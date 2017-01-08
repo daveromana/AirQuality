@@ -15,6 +15,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import will.tw.airquality.AirService;
 import will.tw.airquality.MainActivity;
 import will.tw.airquality.R;
@@ -30,6 +33,8 @@ public class AirFragment extends Fragment {
     private ArrayList<Record> airreport;
     private TextView text_sitename, text_country, text_psi, text_majorpollutant, text_status, text_so2, text_co, text_o3, text_pm10,
             text_pm25, text_no2, text_windspeed, text_winddirec, text_fpmi, text_nox, text_no, text_publishtime;
+    
+    
 
     public static AirFragment newInstance(int sectionNumber, String title) {
         AirFragment fragment = new AirFragment();
@@ -37,6 +42,7 @@ public class AirFragment extends Fragment {
 //        fragment.setArguments(args);
         return fragment;
     }
+
 
     public AirFragment() {
     }
@@ -47,6 +53,10 @@ public class AirFragment extends Fragment {
         return inflater.inflate(R.layout.air_layout, container, false);
     }
 
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(AirService.ReportEvent intent){
+        Log.e("wvwnBus",intent.intent.get(0).getCounty());
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

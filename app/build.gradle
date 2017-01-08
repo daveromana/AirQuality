@@ -43,5 +43,6 @@ dependencies {
     compile 'com.android.support:design:25.1.0'
     compile 'com.ashokvarma.android:bottom-navigation-bar:1.2.0'
     compile 'com.google.android.gms:play-services-location:10.0.1'
+    compile 'de.greenrobot:eventbus:3.0.0-beta1'
 
 }

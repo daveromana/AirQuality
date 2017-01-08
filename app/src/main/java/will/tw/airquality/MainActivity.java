@@ -18,6 +18,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int FRG_WEATHER_POS = 2;
     private String mdonecity;
     private Double donelan,donelat;
+
 
 
     @Override
@@ -79,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
     }
+
+
 
 
 
@@ -259,7 +265,6 @@ public class MainActivity extends AppCompatActivity {
         public void onError(Throwable e) {
             Log.e("onRrror",e.toString());
             Log.e("onErroor", "UvSubscriber Error");
-
         }
 
 
@@ -313,7 +318,6 @@ public class MainActivity extends AppCompatActivity {
         public void onError(Throwable e) {
             Log.e("onRrror",e.toString());
             Log.e("onErroor", "UvStationSubscriber Error");
-
         }
 
 

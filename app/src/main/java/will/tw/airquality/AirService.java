@@ -3,16 +3,14 @@ package will.tw.airquality;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.util.Log;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 
+import de.greenrobot.event.EventBus;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -20,9 +18,10 @@ import rx.schedulers.Schedulers;
 import will.tw.airquality.air.api.AirApi;
 import will.tw.airquality.air.model.AirReport;
 import will.tw.airquality.air.model.Record;
+import will.tw.airquality.gms.MessageEvent;
 import will.tw.airquality.station.api.StationApi;
 import will.tw.airquality.station.model.StationReport;
-import will.tw.airquality.gms.location;
+
 /**
  * Created by Ashbar on 2016/12/31.
  */
@@ -36,7 +35,6 @@ public class AirService extends IntentService {
     private Double servicelon, servicelat;
     private ArrayList<will.tw.airquality.station.model.Record> stationreports;
 
-    private ArrayList<? extends Parcelable> doneairreport;
 
     public AirService() {
         super("Retrofit");
@@ -47,8 +45,8 @@ public class AirService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         servicecity = intent.getStringExtra("city");
-        servicelat = intent.getDoubleExtra("lat",0);
-        servicelon = intent.getDoubleExtra("lon",0);
+        servicelat = intent.getDoubleExtra("lat", 0);
+        servicelon = intent.getDoubleExtra("lon", 0);
         StationSys("{County:" + servicecity + "}");
     }
 
@@ -64,6 +62,33 @@ public class AirService extends IntentService {
     /**
      * Called when the activity is first created.
      */
+    class MyServerThread extends Thread {
+        @Override
+        public void run() {
+            EventBus.getDefault().post(new ActivityEvent("Start"));
+//            EventBus.getDefault().post(new ReportEvent(mAirReport));
+        }
+    }
+
+
+    public class ActivityEvent {
+
+        public String intent;
+
+        public ActivityEvent(String message){
+            this.intent=message;
+
+        }
+    }
+
+    public class ReportEvent {
+
+        public ArrayList<Record> intent;
+
+        public ReportEvent(ArrayList<Record> message){
+            this.intent=message;
+        }
+    }
 
 
     private class StationSubscriber extends Subscriber<StationReport> {
@@ -138,14 +163,8 @@ public class AirService extends IntentService {
             text = airreports.get(0).getSiteName();
             Log.e("countory Service", text);
             mAirReport = airreports;
-            Bundle message = new Bundle();
-            ArrayList<Record> arrayList= new ArrayList<Record>();
-            arrayList.add(arrayList);
-            message.putInt("KeyOne", 1);
-            message.putParcelableArrayList("list",arrayList);
-            Intent intent = new Intent("FilterString");
-            intent.putExtras(message);
-            sendBroadcast(intent);
+            EventBus.getDefault().post(new ReportEvent(airreports));
+            new MyServerThread().start();
             stopSelf();
         }
     }
@@ -159,9 +178,6 @@ public class AirService extends IntentService {
                 .observeOn(mainThread)
                 .subscribe(subscriber);
     }
-
-
-
 
 
 }
