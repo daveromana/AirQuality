@@ -1,25 +1,19 @@
 package will.tw.airquality.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
-import de.greenrobot.event.ThreadMode;
+
 import will.tw.airquality.AirService;
-import will.tw.airquality.MainActivity;
 import will.tw.airquality.R;
 import will.tw.airquality.air.model.Record;
 
@@ -33,8 +27,7 @@ public class AirFragment extends Fragment {
     private ArrayList<Record> airreport;
     private TextView text_sitename, text_country, text_psi, text_majorpollutant, text_status, text_so2, text_co, text_o3, text_pm10,
             text_pm25, text_no2, text_windspeed, text_winddirec, text_fpmi, text_nox, text_no, text_publishtime;
-    
-    
+
 
     public static AirFragment newInstance(int sectionNumber, String title) {
         AirFragment fragment = new AirFragment();
@@ -53,10 +46,13 @@ public class AirFragment extends Fragment {
         return inflater.inflate(R.layout.air_layout, container, false);
     }
 
-//    @Subscribe(threadMode = ThreadMode.MainThread)
+    //    @Subscribe(threadMode = ThreadMode.MainThread)
 //    public void helloEventBus(AirService.ReportEvent intent){
-//        Log.e("wvwnBus",intent.intent.get(0).getCounty());
+//        airreport = intent.intent;
+//        Log.e("wvwnBus",airreport.get(0).getCounty());
+//
 //    }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -84,7 +80,7 @@ public class AirFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateData();
+//        updateData(airreport);
     }
 
     public void updateData() {
@@ -93,7 +89,7 @@ public class AirFragment extends Fragment {
             text_country.setText(AirService.mAirReport.get(0).getCounty());
             text_psi.setText(AirService.mAirReport.get(0).getPSI());
             majorpollutant = AirService.mAirReport.get(0).getMajorPollutant();
-            if(majorpollutant.compareTo("") == 0) {
+            if (majorpollutant.compareTo("") == 0) {
                 text_majorpollutant.setText("無空氣汙染指標物");
             } else {
                 text_majorpollutant.setText(AirService.mAirReport.get(0).getMajorPollutant());

@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
-import will.tw.airquality.SplashActivity;
 
 /**
  * Created by william on 2017/1/5.
@@ -115,16 +114,7 @@ public class location implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
 //        this.lat = lat;
 //        this.lon = lon;
 //    }
-//
-//    public class MessageEvent {
-//        public final String evenaddress;
-//        public final Double evenlat, evenlon;
-//        public MessageEvent(String evenaddress,Double evenlat, Double evenlon) {
-//            this.evenaddress = Addresscode;
-//            this.evenlat = lat;
-//            this.evenlon = lon;
-//        }
-//    }
+
 
     @Override
     public void onConnectionSuspended(int i) {

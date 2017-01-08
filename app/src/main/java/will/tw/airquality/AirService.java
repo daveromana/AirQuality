@@ -34,6 +34,7 @@ public class AirService extends IntentService {
     private String servicecity;
     private Double servicelon, servicelat;
     private ArrayList<will.tw.airquality.station.model.Record> stationreports;
+    private ArrayList<Record> posairreport;
 
 
     public AirService() {
@@ -65,8 +66,8 @@ public class AirService extends IntentService {
     class MyServerThread extends Thread {
         @Override
         public void run() {
-            EventBus.getDefault().post(new ActivityEvent("Start"));
-//            EventBus.getDefault().post(new ReportEvent(mAirReport));
+            EventBus.getDefault().post(new ActivityEvent("Start", posairreport));
+
         }
     }
 
@@ -74,21 +75,13 @@ public class AirService extends IntentService {
     public class ActivityEvent {
 
         public String intent;
+        public ArrayList<Record> Record;
 
-        public ActivityEvent(String message){
-            this.intent=message;
-
+        public ActivityEvent(String message, ArrayList<Record> pore) {
+            this.intent = message;
+            this.Record = pore;
         }
     }
-
-//    public class ReportEvent {
-//
-//        public ArrayList<Record> intent;
-//
-//        public ReportEvent(ArrayList<Record> message){
-//            this.intent=message;
-//        }
-//    }
 
 
     private class StationSubscriber extends Subscriber<StationReport> {
@@ -163,9 +156,9 @@ public class AirService extends IntentService {
             text = airreports.get(0).getSiteName();
             Log.e("countory Service", text);
             mAirReport = airreports;
-//            EventBus.getDefault().post(new ReportEvent(airreports));
+            posairreport = airreports;
             new MyServerThread().start();
-            stopSelf();
+//            stopSelf();
         }
     }
 

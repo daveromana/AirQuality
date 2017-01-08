@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
@@ -37,6 +38,7 @@ public class SplashActivity extends AppCompatActivity {
     private location gmslocation;
     private Double acevlaat, acevlon;
     private String acevcity;
+    private ArrayList<will.tw.airquality.air.model.Record> airreport ;
 
 
     @Override
@@ -69,6 +71,8 @@ public class SplashActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.BackgroundThread)
     public void startEventBus(AirService.ActivityEvent activityEvent) {
+        airreport = activityEvent.Record;
+        Log.e("qweqweqweqwe",airreport.get(0).getCounty());
         if (activityEvent.intent.compareTo("Start")==0){
             Intent i = new Intent(SplashActivity.this, MainActivity.class);
             //通过Intent打开最终真正的主界面Main这个Activity
@@ -91,7 +95,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onDestroy();
         gmslocation.disconnect();
         EventBus.getDefault().unregister(this);
-        Log.e("William HandlerThread", "Destroy");
     }
 
     @Override
