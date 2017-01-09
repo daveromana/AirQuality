@@ -3,10 +3,10 @@
     <string name="app_name">空氣</string>
     <string name="section_format">哈囉</string>
     <string name="action_settings">設定</string>
-    <string name="text_sitename">觀測站名稱：</string>
+    <string name="text_sitename">最近的觀測站</string>
     <string name="text_country">縣市：</string>
-    <string name="text_psi">空氣污染指標:</string>
-    <string name="text_majorpollutant">指標污染物：</string>
+    <string name="text_psi">整體空氣品質</string>
+    <string name="text_majorpollutant">指標污染物</string>
     <string name="text_status">狀態：</string>
     <string name="text_so2">二氧化硫濃度：</string>
     <string name="text_co">一氧化碳濃度：</string>
@@ -19,5 +19,5 @@
     <string name="text_fpmi">細懸浮微粒指標：</string>
     <string name="text_nox">氮氧化物：</string>
     <string name="text_no">一氧化氮：</string>
-    <string name="text_publishtime">發布時間：</string>
+    <string name="text_publishtime">更新時間：</string>
 </resources>

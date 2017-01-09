@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,10 +18,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
-import de.greenrobot.event.ThreadMode;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -34,7 +29,6 @@ import will.tw.airquality.uv.model.Record;
 import will.tw.airquality.uv.model.UvReport;
 
 
-
 public class MainActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -44,15 +38,12 @@ public class MainActivity extends AppCompatActivity {
     private static final int FRG_UV_POS = 1;
     private static final int FRG_WEATHER_POS = 2;
     private String mdonecity;
-    private Double donelan,donelat;
-    private ArrayList<? extends will.tw.airquality.air.model.Record> posairroport;
+    private Double donelan, donelat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -67,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         mdonecity = i.getStringExtra("donecity");
         donelan = i.getDoubleExtra("donelon", 0);
         donelat = i.getDoubleExtra("donelat", 0);
-        uvsysus("{County:"+ mdonecity+"}");
+        uvsysus("{County:" + mdonecity + "}");
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -88,20 +79,20 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             // in main thread
         }
 
 
-        protected void onProgressUpdate(Void... progress){
+        protected void onProgressUpdate(Void... progress) {
             // in main thread
         }
 
-        protected void onPostExecute(Void result){
+        protected void onPostExecute(Void result) {
             // in main thread
         }
 
-        protected void onCancelled(Void result){
+        protected void onCancelled(Void result) {
             // in main thread
         }
 
@@ -164,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        EventBus.getDefault().unregister(this);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -213,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
             String name = makeFragmentName(mViewPager.getId(), frgAirPos);
             return getSupportFragmentManager().findFragmentByTag(name);
         }
+
         private String makeFragmentName(int viewId, int index) {
             return "android:switcher:" + viewId + ":" + index;
         }
@@ -259,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onError(Throwable e) {
-            Log.e("onRrror",e.toString());
+            Log.e("onRrror", e.toString());
             Log.e("onErroor", "UvSubscriber Error");
         }
 
@@ -274,14 +265,14 @@ public class MainActivity extends AppCompatActivity {
             Double nowlat = donelat;
             Double nowlon = donelan;
             Double mindisten = 99999999999999.9;
-            for (int i= 0; i<uvreports.size(); i ++){
-                strlat = uvreports.get(i).getWGS84Lat().replace(",","").replace(".","");
-                strlon = uvreports.get(i).getWGS84Lon().replace(",","").replace(".","");
-                lat = Double.valueOf(strlat.substring(0,2)+"."+strlat.substring(2,strlat.length()));
-                lon = Double.valueOf(strlon.substring(0,3)+"."+strlon.substring(3,strlon.length()));
-                Double sum = (nowlat - lat)*(nowlat - lat)+(nowlon - lon)*(nowlon - lon);
+            for (int i = 0; i < uvreports.size(); i++) {
+                strlat = uvreports.get(i).getWGS84Lat().replace(",", "").replace(".", "");
+                strlon = uvreports.get(i).getWGS84Lon().replace(",", "").replace(".", "");
+                lat = Double.valueOf(strlat.substring(0, 2) + "." + strlat.substring(2, strlat.length()));
+                lon = Double.valueOf(strlon.substring(0, 3) + "." + strlon.substring(3, strlon.length()));
+                Double sum = (nowlat - lat) * (nowlat - lat) + (nowlon - lon) * (nowlon - lon);
                 Double distence = Math.sqrt(sum);
-                if (distence<mindisten){
+                if (distence < mindisten) {
                     uvsitename = uvreports.get(i).getSiteName();
                     mindisten = distence;
                 }
@@ -289,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
             }
             Log.e("William UV", uvsitename);
 
-            uvsitenamesysus("{SiteName:"+uvsitename+"}");
+            uvsitenamesysus("{SiteName:" + uvsitename + "}");
 
 
         }
@@ -312,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onError(Throwable e) {
-            Log.e("onRrror",e.toString());
+            Log.e("onRrror", e.toString());
             Log.e("onErroor", "UvStationSubscriber Error");
         }
 
@@ -335,7 +326,6 @@ public class MainActivity extends AppCompatActivity {
                 .observeOn(mainThread)
                 .subscribe(subscriber);
     }
-
 
 
 }

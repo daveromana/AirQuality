@@ -1,6 +1,7 @@
 package will.tw.airquality.fragment;
 
 
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import will.tw.airquality.AirService;
 import will.tw.airquality.R;
+import will.tw.airquality.SplashActivity;
 import will.tw.airquality.air.model.Record;
 
 /**
@@ -36,7 +40,6 @@ public class AirFragment extends Fragment {
         return fragment;
     }
 
-
     public AirFragment() {
     }
 
@@ -54,25 +57,27 @@ public class AirFragment extends Fragment {
 //    }
 
 
+
+
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         text_sitename = (TextView) view.findViewById(R.id.sitename);
-        text_country = (TextView) view.findViewById(R.id.county);
         text_psi = (TextView) view.findViewById(R.id.psi);
         text_majorpollutant = (TextView) view.findViewById(R.id.majorpollutant);
         text_status = (TextView) view.findViewById(R.id.status);
-        text_so2 = (TextView) view.findViewById(R.id.so2);
-        text_co = (TextView) view.findViewById(R.id.co);
-        text_o3 = (TextView) view.findViewById(R.id.o3);
-        text_pm10 = (TextView) view.findViewById(R.id.pm10);
-        text_pm25 = (TextView) view.findViewById(R.id.pm25);
-        text_no2 = (TextView) view.findViewById(R.id.no2);
-        text_windspeed = (TextView) view.findViewById(R.id.windspeed);
-        text_winddirec = (TextView) view.findViewById(R.id.winddirec);
-        text_fpmi = (TextView) view.findViewById(R.id.fpmi);
-        text_no = (TextView) view.findViewById(R.id.no);
-        text_nox = (TextView) view.findViewById(R.id.nox);
+//        text_so2 = (TextView) view.findViewById(R.id.so2);
+//        text_co = (TextView) view.findViewById(R.id.co);
+//        text_o3 = (TextView) view.findViewById(R.id.o3);
+//        text_pm10 = (TextView) view.findViewById(R.id.pm10);
+//        text_pm25 = (TextView) view.findViewById(R.id.pm25);
+//        text_no2 = (TextView) view.findViewById(R.id.no2);
+//        text_windspeed = (TextView) view.findViewById(R.id.windspeed);
+//        text_winddirec = (TextView) view.findViewById(R.id.winddirec);
+//        text_fpmi = (TextView) view.findViewById(R.id.fpmi);
+//        text_no = (TextView) view.findViewById(R.id.no);
+//        text_nox = (TextView) view.findViewById(R.id.nox);
         text_publishtime = (TextView) view.findViewById(R.id.publishtime);
 
     }
@@ -80,13 +85,13 @@ public class AirFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        updateData(airreport);
+        updateData();
     }
+
 
     public void updateData() {
         if (AirService.mAirReport != null) {
-            text_sitename.setText(AirService.mAirReport.get(0).getSiteName());
-            text_country.setText(AirService.mAirReport.get(0).getCounty());
+            text_sitename.setText(AirService.mAirReport.get(0).getCounty() +","+AirService.mAirReport.get(0).getSiteName());
             text_psi.setText(AirService.mAirReport.get(0).getPSI());
             majorpollutant = AirService.mAirReport.get(0).getMajorPollutant();
             if (majorpollutant.compareTo("") == 0) {
@@ -95,20 +100,22 @@ public class AirFragment extends Fragment {
                 text_majorpollutant.setText(AirService.mAirReport.get(0).getMajorPollutant());
             }
             text_status.setText(AirService.mAirReport.get(0).getStatus());
-            text_so2.setText(AirService.mAirReport.get(0).getSO2());
-            text_co.setText(AirService.mAirReport.get(0).getCO());
-            text_o3.setText(AirService.mAirReport.get(0).getO3());
-            text_pm10.setText(AirService.mAirReport.get(0).getPM10());
-            text_pm25.setText(AirService.mAirReport.get(0).getPM25());
-            text_no2.setText(AirService.mAirReport.get(0).getNO2());
-            text_windspeed.setText(AirService.mAirReport.get(0).getWindSpeed());
-            text_winddirec.setText(AirService.mAirReport.get(0).getWindDirec());
-            text_fpmi.setText(AirService.mAirReport.get(0).getFPMI());
-            text_no.setText(AirService.mAirReport.get(0).getNO());
-            text_nox.setText(AirService.mAirReport.get(0).getNOx());
+//            text_so2.setText(AirService.mAirReport.get(0).getSO2());
+//            text_co.setText(AirService.mAirReport.get(0).getCO());
+//            text_o3.setText(AirService.mAirReport.get(0).getO3());
+//            text_pm10.setText(AirService.mAirReport.get(0).getPM10());
+//            text_pm25.setText(AirService.mAirReport.get(0).getPM25());
+//            text_no2.setText(AirService.mAirReport.get(0).getNO2());
+//            text_windspeed.setText(AirService.mAirReport.get(0).getWindSpeed());
+//            text_winddirec.setText(AirService.mAirReport.get(0).getWindDirec());
+//            text_fpmi.setText(AirService.mAirReport.get(0).getFPMI());
+//            text_no.setText(AirService.mAirReport.get(0).getNO());
+//            text_nox.setText(AirService.mAirReport.get(0).getNOx());
             text_publishtime.setText(AirService.mAirReport.get(0).getPublishTime());
-            Log.e("AirFragment", AirService.mAirReport.get(0).getCounty());
+//            Log.e("AirFragment", AirService.mAirReport.get(0).getCounty());
 
         }
     }
+
+
 }

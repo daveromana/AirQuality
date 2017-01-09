@@ -51,14 +51,6 @@ public class AirService extends IntentService {
         StationSys("{County:" + servicecity + "}");
     }
 
-    //
-    @Override
-    public void onCreate() {
-        super.onCreate();
-//        cityname = testLocationProvider();
-//        Log.e("William service", cityname);
-//        StationSys("{County:"+cityname+"}");
-    }
 
     /**
      * Called when the activity is first created.
@@ -82,6 +74,7 @@ public class AirService extends IntentService {
             this.Record = pore;
         }
     }
+
 
 
     private class StationSubscriber extends Subscriber<StationReport> {
@@ -158,7 +151,7 @@ public class AirService extends IntentService {
             mAirReport = airreports;
             posairreport = airreports;
             new MyServerThread().start();
-//            stopSelf();
+            stopSelf();
         }
     }
 

@@ -62,14 +62,13 @@ public class SplashActivity extends AppCompatActivity {
         acevlaat = message.evenlat;
         acevlon = message.evenlon;
         Intent intent = new Intent(SplashActivity.this, AirService.class);
-//            Log.e("CallBack", mCityName);
         intent.putExtra("city", acevcity );
         intent.putExtra("lat", acevlaat);
         intent.putExtra("lon", acevlon);
         startService(intent);
     }
 
-    @Subscribe(threadMode = ThreadMode.BackgroundThread)
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void startEventBus(AirService.ActivityEvent activityEvent) {
         airreport = activityEvent.Record;
         Log.e("qweqweqweqwe",airreport.get(0).getCounty());
@@ -83,7 +82,6 @@ public class SplashActivity extends AppCompatActivity {
             SplashActivity.this.finish();    //关闭自己这个开场屏
         }
     }
-
 
     @Override
     protected void onResume() {
