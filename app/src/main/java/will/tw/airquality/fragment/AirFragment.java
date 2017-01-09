@@ -2,35 +2,32 @@ package will.tw.airquality.fragment;
 
 
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
-import de.greenrobot.event.ThreadMode;
 import will.tw.airquality.AirService;
 import will.tw.airquality.R;
-import will.tw.airquality.SplashActivity;
-import will.tw.airquality.air.model.Record;
 
 /**
  * Created by william on 2016/12/30.
  */
 
-public class AirFragment extends Fragment {
+public class AirFragment extends Fragment{
     private String majorpollutant;
 
-    private ArrayList<Record> airreport;
     private TextView text_sitename, text_country, text_psi, text_majorpollutant, text_status, text_so2, text_co, text_o3, text_pm10,
             text_pm25, text_no2, text_windspeed, text_winddirec, text_fpmi, text_nox, text_no, text_publishtime;
+    private ImageButton imageButton;
+    private int psi;
 
 
     public static AirFragment newInstance(int sectionNumber, String title) {
@@ -79,6 +76,16 @@ public class AirFragment extends Fragment {
 //        text_no = (TextView) view.findViewById(R.id.no);
 //        text_nox = (TextView) view.findViewById(R.id.nox);
         text_publishtime = (TextView) view.findViewById(R.id.publishtime);
+        imageButton = (ImageButton) view.findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), AirDetal.class);
+                startActivity(intent);
+
+            }
+        });
 
     }
 
@@ -92,6 +99,11 @@ public class AirFragment extends Fragment {
     public void updateData() {
         if (AirService.mAirReport != null) {
             text_sitename.setText(AirService.mAirReport.get(0).getCounty() +","+AirService.mAirReport.get(0).getSiteName());
+            psi = Integer.valueOf(AirService.mAirReport.get(0).getPSI());
+            if (psi <=50){
+                text_psi.setTextColor(Color.GREEN);
+                text_status.setTextColor(Color.GREEN);
+            }
             text_psi.setText(AirService.mAirReport.get(0).getPSI());
             majorpollutant = AirService.mAirReport.get(0).getMajorPollutant();
             if (majorpollutant.compareTo("") == 0) {
@@ -116,6 +128,8 @@ public class AirFragment extends Fragment {
 
         }
     }
+
+
 
 
 }

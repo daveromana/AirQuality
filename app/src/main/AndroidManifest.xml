@@ -19,8 +19,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity">
-        </activity>
 
+        </activity>
+        <activity android:name=".fragment.AirDetal">
+
+        </activity>
         <service android:name=".AirService" android:enabled="true" />
     </application>
 

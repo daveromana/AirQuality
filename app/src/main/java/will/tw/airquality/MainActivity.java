@@ -22,6 +22,7 @@ import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import will.tw.airquality.fragment.AirDetal;
 import will.tw.airquality.fragment.AirFragment;
 import will.tw.airquality.fragment.UvFragment;
 import will.tw.airquality.uv.api.UvApi;
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             uvfr.updateData();
             Log.d("William", "UVFragment.updateData()!");
         }
+
 //
 //        Fragment accountfrg = mSectionsPagerAdapter.getActiveFragment(mViewPager, FRG_ACCOUNT_POS);
 //        if (accountfrg instanceof AccountFragment) {
