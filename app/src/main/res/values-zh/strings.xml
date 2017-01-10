@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">空氣</string>
+    <string name="app_name">台灣天氣空氣品質</string>
     <string name="section_format">哈囉</string>
     <string name="action_settings">設定</string>
     <string name="text_sitename">最近的觀測站</string>
@@ -20,4 +20,15 @@
     <string name="text_nox">氮氧化物：</string>
     <string name="text_no">一氧化氮：</string>
     <string name="text_publishtime">更新時間：</string>
+    <string name="text_uvi">紫外線指數</string>
+    <string name="uv_low">微量</string>
+    <string name="uv_medium">低量</string>
+    <string name="uv_high">中量</string>
+    <string name="uv_veryhigh">過量</string>
+    <string name="uv_extreme">危險</string>
+    <string name="uv_PublishAgency">發布單位</string>
+    <string name="air_sitename">監測站名稱：</string>
+    <string name="air_county">所在縣市：</string>
+    <string name="air_psi">空氣污染指標：</string>
+    <string name="air_majorpollutant">指標污染物：</string>
 </resources>

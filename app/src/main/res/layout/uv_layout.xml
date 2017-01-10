@@ -1,26 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/uvsitename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="26dp"
+        android:paddingTop="10dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/text_sitename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/text_sitename" />
+
+    <TextView
+        android:id="@+id/text_uvi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_uvi"
+        android:paddingTop="30dp"
+        android:gravity="center"
+        />
+        <TextView
+            android:id="@+id/uvi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:gravity="center"
+            android:textSize="20mm"
+            android:textStyle="bold"
+
+            />
+
+    <TextView
+        android:id="@+id/uvstatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/text_PublishAgency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/uv_PublishAgency"
+        android:gravity="center"
+        android:paddingTop="15dp"
+        />
+
+    <TextView
+        android:id="@+id/PublishAgency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="28dp"
+        android:paddingTop="15px"
+
+        android:textStyle="bold"
+        />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-
-        <TextView
-            android:text="@string/text_sitename"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_sitename" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        >
 
         <TextView
-            android:text="TextView"
+            android:id="@+id/text_publishtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/uvsitename"
-            android:layout_toRightOf="@id/text_sitename"/>
+            android:text="@string/text_publishtime" />
+
+        <TextView
+            android:id="@+id/uvpublishtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/text_publishtime"
+            android:text="TextView" />
+
     </RelativeLayout>
+
+
 
 </LinearLayout>

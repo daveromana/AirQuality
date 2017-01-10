@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AirQuality</string>
+    <string name="app_name">TaiwanAirQuality</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="text_sitename">SiteName:</string>
@@ -19,4 +19,15 @@
     <string name="text_nox">NOx:</string>
     <string name="text_no">NO:</string>
     <string name="text_publishtime">PublishTime:</string>
+    <string name="text_uvi">UVI</string>
+    <string name="uv_low">LOW</string>
+    <string name="uv_medium">MEDIUM</string>
+    <string name="uv_high">HIGH</string>
+    <string name="uv_veryhigh">VERY HIGH</string>
+    <string name="uv_extreme">EXTREME</string>
+    <string name="uv_PublishAgency">PublishAgency</string>
+    <string name="air_sitename">SiteName:</string>
+    <string name="air_county">County:</string>
+    <string name="air_psi">PSI:</string>
+    <string name="air_majorpollutant">MajorPollutant:</string>
 </resources>
