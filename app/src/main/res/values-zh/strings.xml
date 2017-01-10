@@ -31,4 +31,6 @@
     <string name="air_county">所在縣市：</string>
     <string name="air_psi">空氣污染指標：</string>
     <string name="air_majorpollutant">指標污染物：</string>
+    <string name="text_acculocation">目前位置</string>
+    <string name="text_temperature"></string>
 </resources>

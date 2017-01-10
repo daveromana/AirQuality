@@ -30,4 +30,5 @@
     <string name="air_county">County:</string>
     <string name="air_psi">PSI:</string>
     <string name="air_majorpollutant">MajorPollutant:</string>
+    <string name="text_acculocation">Location</string>
 </resources>

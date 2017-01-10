@@ -71,7 +71,6 @@ public class SplashActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void startEventBus(AirService.ActivityEvent activityEvent) {
         airreport = activityEvent.Record;
-        Log.e("qweqweqweqwe",airreport.get(0).getCounty());
         if (activityEvent.intent.compareTo("Start")==0){
             Intent i = new Intent(SplashActivity.this, MainActivity.class);
             //通过Intent打开最终真正的主界面Main这个Activity

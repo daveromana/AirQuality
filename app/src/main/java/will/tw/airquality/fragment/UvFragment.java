@@ -63,7 +63,13 @@ public class UvFragment extends Fragment {
         if (uvfrgreport != null) {
             text_sitename.setText(uvfrgreport.get(0).getCounty() + "," + uvfrgreport.get(0).getSiteName());
             text_uvi.setText(uvfrgreport.get(0).getUVI());
-            uvi = Double.valueOf(uvfrgreport.get(0).getUVI());
+            if (uvfrgreport.get(0).getUVI().compareTo("") == 0){
+                uvi =0;
+                text_uvi.setText("0");
+
+            }else{
+                uvi = Double.valueOf(uvfrgreport.get(0).getUVI());
+            }
             if (uvi <= 2) {
                 text_uvi.setTextColor(getResources().getColor(R.color.green));
                 text_uvstatus.setText(R.string.uv_low);

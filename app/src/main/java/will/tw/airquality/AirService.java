@@ -9,7 +9,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-
 import de.greenrobot.event.EventBus;
 import rx.Scheduler;
 import rx.Subscriber;
@@ -22,9 +21,10 @@ import will.tw.airquality.accuweather.model.AccuweatherReport;
 import will.tw.airquality.air.api.AirApi;
 import will.tw.airquality.air.model.AirReport;
 import will.tw.airquality.air.model.Record;
-import will.tw.airquality.gms.MessageEvent;
 import will.tw.airquality.station.api.StationApi;
 import will.tw.airquality.station.model.StationReport;
+import will.tw.airquality.temperature.api.TemprtatureApi;
+import will.tw.airquality.temperature.model.TemperatureReport;
 import will.tw.airquality.uv.api.UvApi;
 import will.tw.airquality.uv.model.UvReport;
 
@@ -45,6 +45,10 @@ public class AirService extends IntentService {
     private ArrayList<will.tw.airquality.station.model.Record> stationreports;
     private ArrayList<Record> posairreport;
     private String uvsitename;
+    public static String accucity;
+    public static String accuarea;
+    public static will.tw.airquality.accuweather.model.AccuweatherReport maccuweatherReport;
+    public static String mHourTemperature;
 
     public AirService() {
         super("Retrofit");
@@ -79,10 +83,10 @@ public class AirService extends IntentService {
 //        servicelat = intent.getDoubleExtra("lat", 0);
 //        servicelon = intent.getDoubleExtra("lon", 0);
         StationSys("{County:" + servicecity + "}");
-        uvsysus("{County:" + servicecity + "}");
         acculocationsys(servicelat+","+servicelon);
-
-
+//        if (mAirReport!=null&&mUVReport!=null){
+//            new MyServerThread().start();
+//        }
     }
 
 
@@ -171,8 +175,8 @@ public class AirService extends IntentService {
             Log.e("countory Service", text);
             mAirReport = airreports;
             posairreport = airreports;
+            uvsysus("{County:" + servicecity + "}");
 
-            new MyServerThread().start();
             stopSelf();
         }
     }
@@ -258,6 +262,8 @@ public class AirService extends IntentService {
             ArrayList<will.tw.airquality.uv.model.Record> uvstationreports = uvReport.getResult().getRecords();
             mUVReport = uvstationreports;
             Log.e("UVSiteName Finish", mUVReport.get(0).getSiteName());
+            new MyServerThread().start();
+
         }
     }
 
@@ -292,6 +298,8 @@ public class AirService extends IntentService {
         public void onNext(AcculocationReport acculocationReport) {
             acculocatiobkey = acculocationReport.getKey();
             Log.e("AcculocaiotnSubscriber", acculocatiobkey);
+            accucity = acculocationReport.getAdministrativeArea().getLocalizedName();
+            accuarea = acculocationReport.getSupplementalAdminAreas().get(0).getLocalizedName();
             accuweathersys(acculocatiobkey);
         }
     }
@@ -323,7 +331,10 @@ public class AirService extends IntentService {
         @Override
         public void onNext(AccuweatherReport accuweatherReport) {
             accuweather = accuweatherReport.getHeadline().getText();
+            maccuweatherReport = accuweatherReport;
             Log.e("AccuWeather", accuweather);
+            hourweathersys(acculocatiobkey);
+
         }
     }
 
@@ -338,4 +349,33 @@ public class AirService extends IntentService {
     }
 
 
+
+    private class HourWeatherSubscriber extends Subscriber<ArrayList<TemperatureReport>> {
+        @Override
+        public void onCompleted() {
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.e("onRrror", e.toString());
+            Log.e("onErroor", "hour Error");
+        }
+
+
+        @Override
+        public void onNext( ArrayList<TemperatureReport> temperatureReport) {
+            mHourTemperature = temperatureReport.get(0).getTemperature().getValue();
+
+        }
+    }
+
+    public void hourweathersys(String type) {
+        final Scheduler newThread = Schedulers.newThread();
+        final Scheduler mainThread = AndroidSchedulers.mainThread();
+        HourWeatherSubscriber subscriber = new HourWeatherSubscriber();
+        TemprtatureApi.findReportByLocaiotnKey(type)
+                .subscribeOn(newThread)
+                .observeOn(mainThread)
+                .subscribe(subscriber);
+    }
 }

@@ -14,90 +14,105 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
-        <TextView
-            android:id="@+id/text_airsitename"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/air_sitename" />
 
-        <TextView
-            android:id="@+id/airsitename"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/text_airsitename"
-            android:text="TextView" />
+            <TextView
+                android:id="@+id/text_airsitename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/air_sitename"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/airsitename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/text_airsitename"
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
+
             <TextView
                 android:id="@+id/text_aircounty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/air_county" />
+                android:text="@string/air_county"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/aircounty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_aircounty"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
+
             <TextView
                 android:id="@+id/text_airpsi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/air_psi" />
+                android:text="@string/air_psi"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/airpsi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_airpsi"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
+
             <TextView
                 android:id="@+id/text_airmajorpollutant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/air_majorpollutant" />
+                android:text="@string/air_majorpollutant"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/airmajorpollutant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_airmajorpollutant"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
+
             <TextView
                 android:id="@+id/text_airstatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_status" />
+                android:text="@string/text_status"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/airstatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_airstatus"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
@@ -109,14 +124,16 @@
                 android:id="@+id/text_so2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_so2" />
+                android:text="@string/text_so2"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/so2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_so2"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
@@ -128,14 +145,16 @@
                 android:id="@+id/text_co"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_co" />
+                android:text="@string/text_co"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/co"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_co"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
@@ -147,14 +166,16 @@
                 android:id="@+id/text_o3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_o3" />
+                android:text="@string/text_o3"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/o3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_o3"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
@@ -166,14 +187,16 @@
                 android:id="@+id/text_pm10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_pm10" />
+                android:text="@string/text_pm10"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/pm10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_pm10"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
@@ -185,14 +208,16 @@
                 android:id="@+id/text_pm2.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_pm2.5" />
+                android:text="@string/text_pm2.5"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/pm25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_pm2.5"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
@@ -204,14 +229,16 @@
                 android:id="@+id/text_no2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_no2" />
+                android:text="@string/text_no2"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/no2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_no2"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
@@ -223,14 +250,16 @@
                 android:id="@+id/text_windspeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_windspeed" />
+                android:text="@string/text_windspeed"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/windspeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_windspeed"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
@@ -242,14 +271,16 @@
                 android:id="@+id/text_winddirec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_winddirec" />
+                android:text="@string/text_winddirec"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/winddirec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_winddirec"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
@@ -261,14 +292,16 @@
                 android:id="@+id/text_fpmi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_fpmi" />
+                android:text="@string/text_fpmi"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/fpmi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_fpmi"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
 
 
         </TableRow>
@@ -282,14 +315,16 @@
                 android:id="@+id/text_nox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_nox" />
+                android:text="@string/text_nox"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/nox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_nox"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
@@ -301,32 +336,37 @@
                 android:id="@+id/text_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_no" />
+                android:text="@string/text_no"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_no"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
+
             <TextView
                 android:id="@+id/text_airpublishtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_publishtime" />
+                android:text="@string/text_publishtime"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/airpublishtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/text_airpublishtime"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="18dp" />
         </TableRow>
     </TableLayout>
 
