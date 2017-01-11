@@ -12,19 +12,19 @@ public class Maximum {
 
     @SerializedName("Value")
     @Expose
-    private Integer value;
+    private String value;
     @SerializedName("Unit")
     @Expose
     private String unit;
     @SerializedName("UnitType")
     @Expose
-    private Integer unitType;
+    private String unitType;
 
-    public Integer getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -36,11 +36,11 @@ public class Maximum {
         this.unit = unit;
     }
 
-    public Integer getUnitType() {
+    public String getUnitType() {
         return unitType;
     }
 
-    public void setUnitType(Integer unitType) {
+    public void setUnitType(String unitType) {
         this.unitType = unitType;
     }
 

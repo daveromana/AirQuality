@@ -83,7 +83,6 @@ public class AirService extends IntentService {
 //        servicelat = intent.getDoubleExtra("lat", 0);
 //        servicelon = intent.getDoubleExtra("lon", 0);
         StationSys("{County:" + servicecity + "}");
-        acculocationsys(servicelat+","+servicelon);
 //        if (mAirReport!=null&&mUVReport!=null){
 //            new MyServerThread().start();
 //        }
@@ -262,7 +261,7 @@ public class AirService extends IntentService {
             ArrayList<will.tw.airquality.uv.model.Record> uvstationreports = uvReport.getResult().getRecords();
             mUVReport = uvstationreports;
             Log.e("UVSiteName Finish", mUVReport.get(0).getSiteName());
-            new MyServerThread().start();
+            acculocationsys(servicelat+","+servicelon);
 
         }
     }
@@ -324,7 +323,7 @@ public class AirService extends IntentService {
         @Override
         public void onError(Throwable e) {
             Log.e("onRrror", e.toString());
-            Log.e("onErroor", "AcculocaiotnSubscriber Error");
+            Log.e("onErroor", "AccuWeatherSubscriber Error");
         }
 
 
@@ -365,6 +364,7 @@ public class AirService extends IntentService {
         @Override
         public void onNext( ArrayList<TemperatureReport> temperatureReport) {
             mHourTemperature = temperatureReport.get(0).getTemperature().getValue();
+            new MyServerThread().start();
 
         }
     }

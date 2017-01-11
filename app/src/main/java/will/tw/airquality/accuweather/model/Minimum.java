@@ -10,19 +10,19 @@ public class Minimum {
 
     @SerializedName("Value")
     @Expose
-    private Double value;
+    private String value;
     @SerializedName("Unit")
     @Expose
     private String unit;
     @SerializedName("UnitType")
     @Expose
-    private Integer unitType;
+    private String unitType;
 
-    public Double getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -34,11 +34,11 @@ public class Minimum {
         this.unit = unit;
     }
 
-    public Integer getUnitType() {
+    public String getUnitType() {
         return unitType;
     }
 
-    public void setUnitType(Integer unitType) {
+    public void setUnitType(String unitType) {
         this.unitType = unitType;
     }
 

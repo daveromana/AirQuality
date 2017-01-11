@@ -32,5 +32,6 @@
     <string name="air_psi">空氣污染指標：</string>
     <string name="air_majorpollutant">指標污染物：</string>
     <string name="text_acculocation">目前位置</string>
-    <string name="text_temperature"></string>
+    <string name="tmp_low">低：</string>
+    <string name="tmp_high">高：</string>
 </resources>

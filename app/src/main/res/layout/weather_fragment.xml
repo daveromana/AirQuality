@@ -29,6 +29,56 @@
         android:textSize="20mm"
         />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        >
+
+        <TextView
+            android:id="@+id/text_high"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tmp_high" />
+
+        <TextView
+            android:id="@+id/maxtmp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/text_high"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/text_low"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tmp_low"
+            android:layout_toRightOf="@+id/maxtmp"
+            android:paddingLeft="20dp"
+            />
+
+        <TextView
+            android:id="@+id/mintmp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/text_low"
+            android:text="TextView" />
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/weathertext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="30dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        />
+
+
+
     <!--<ImageButton-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->

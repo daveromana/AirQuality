@@ -23,7 +23,7 @@ import static android.hardware.Sensor.TYPE_AMBIENT_TEMPERATURE;
  */
 
 public class WeatherFragment extends Fragment {
-    private TextView acculocation,temper;
+    private TextView acculocation,temper,weathertext,tmpmax,tmpmin;
     private ImageButton imageButton;
 
     public static Fragment newInstance(int frgWeatherPos, String weather) {
@@ -54,6 +54,9 @@ public class WeatherFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         acculocation = (TextView)view.findViewById(R.id.acculocation);
         temper = (TextView) view.findViewById(R.id.temper);
+        weathertext=(TextView) view.findViewById(R.id.weathertext);
+        tmpmax=(TextView) view.findViewById(R.id.maxtmp);
+        tmpmin = (TextView) view.findViewById(R.id.mintmp);
 //        imageButton = (ImageButton) view.findViewById(R.id.imageButton2);
 
     }
@@ -61,6 +64,9 @@ public class WeatherFragment extends Fragment {
     public void updateData() {
         acculocation.setText(AirService.accucity + "," + AirService.accuarea);
         temper.setText(AirService.mHourTemperature.replace(".", "").substring(0, 2) + "°C");
+        weathertext.setText(AirService.maccuweatherReport.getHeadline().getText());
+        tmpmax.setText(AirService.maccuweatherReport.getDailyForecasts().get(0).getTemperature().getMaximum().getValue().replace(".", "").substring(0, 2) + " °C");
+        tmpmin.setText(AirService.maccuweatherReport.getDailyForecasts().get(0).getTemperature().getMinimum().getValue().replace(".", "").substring(0, 2) + " °C");
 //        Picasso.with(Context context)
 //                .load("http://vignette3.wikia.nocookie.net/logopedia/images/a/a9/AccuWeather.svg/revision/latest?cb=20130419211253")
 //                .into(imageButton);

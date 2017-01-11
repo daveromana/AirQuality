@@ -31,4 +31,6 @@
     <string name="air_psi">PSI:</string>
     <string name="air_majorpollutant">MajorPollutant:</string>
     <string name="text_acculocation">Location</string>
+    <string name="tmp_low">Low:</string>
+    <string name="tmp_high">High:</string>
 </resources>
